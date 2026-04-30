@@ -85,7 +85,6 @@ ListStatusCode addBack(list_t *list, void *data) {
 }
 
 ListStatusCode insertAt(list_t *list, size_t index,  void *data) {
-    if (list->size == 0) return ListEmptyError;
     if (index > list->size) return ListIndexError;
 
     if (index == 0) {

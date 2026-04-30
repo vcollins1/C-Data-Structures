@@ -14,6 +14,7 @@ int main(void) {
     list_t* list = createList(sizeof(int));
 
     int a = 1, b = 2, c = 3;
+    insertAt(list, 0, &a);
     unshift(list, &a);
     unshift(list, &b);
     unshift(list, &c);
