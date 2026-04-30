@@ -20,7 +20,7 @@ struct ListIterator {
     Node* current;
 };
 
-list_t* createList(int dataSize) {
+list_t* createList(size_t dataSize) {
     list_t* list = malloc(sizeof(list_t));
     if (!list) return NULL;
 

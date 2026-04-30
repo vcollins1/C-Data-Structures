@@ -24,7 +24,7 @@ typedef enum {
 } ListStatusCode;
 
 // Create and Destory List functions
-list_t* createList(int dataSize);
+list_t* createList(size_t dataSize);
 void destroyList(list_t* list, clearCallback func);
 
 // Add elements to list
