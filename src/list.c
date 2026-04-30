@@ -31,7 +31,7 @@ list_t* createList(int dataSize) {
     return list;
 }
 
-void destoryList(list_t *list, clearCallback func) {
+void destroyList(list_t *list, clearCallback func) {
     clearList(list, func);
     free(list->head);
     free(list->tail);

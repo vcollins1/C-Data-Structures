@@ -30,7 +30,7 @@ int main(void) {
     }
     printf("\n");
 
-    destoryList(list, NULL);
+    destroyList(list, NULL);
     free(data);
     return 0;
 }

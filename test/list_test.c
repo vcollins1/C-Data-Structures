@@ -12,7 +12,7 @@ int initFunc(void) {
 }
 
 int cleanFunc(void) {
-    destoryList(list, NULL);
+    destroyList(list, NULL);
     return 0;
 }
 
