@@ -234,6 +234,10 @@ listIter_t* createListIterator(list_t* list) {
     return iter;
 }
 
+void destroyListIterator(listIter_t *iter) {
+    free(iter);
+}
+
 void listIteratorNext(listIter_t* iter) {
     if (iter->current) {
         iter->current = iter->current->next;

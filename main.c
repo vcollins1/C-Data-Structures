@@ -29,6 +29,7 @@ int main(void) {
         listIteratorNext(iter);
     }
     printf("\n");
+    destroyListIterator(iter);
 
     destroyList(list, NULL);
     free(data);

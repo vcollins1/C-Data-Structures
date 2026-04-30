@@ -46,6 +46,7 @@ ListStatusCode set(list_t* list, size_t index, void* update);
 
 // List iteratoion
 listIter_t* createListIterator(list_t* list);
+void destroyListIterator(listIter_t* iter);
 void listIteratorNext(listIter_t* iter);
 void getListIteratorData(listIter_t* iter, void* output);
 bool hasNext(listIter_t* iter);
