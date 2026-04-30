@@ -178,13 +178,14 @@ void clearList(list_t* list, clearCallback func) {
     while (list->head) {
         Node* current = list->head;
         list->head = list->head->next;
-        if (func == NULL)
-            free(current->data);
-        else
-            func(current->data);
 
+        if (func != NULL)
+            free(current->data);
+            
+        func(current->data);
         free(current);
     }
+    
     list->size = 0;
     list->head = list->tail = NULL;
 }
