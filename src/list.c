@@ -180,12 +180,12 @@ void clearList(list_t* list, clearCallback func) {
         list->head = list->head->next;
 
         if (func != NULL)
-            free(current->data);
+            func(current->data);
             
-        func(current->data);
+        free(current->data);
         free(current);
     }
-    
+
     list->size = 0;
     list->head = list->tail = NULL;
 }
