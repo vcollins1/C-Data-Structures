@@ -56,7 +56,7 @@ void testRemoves(void) {
     destroyList(list, NULL);
 }
 
-void testFind(void) {
+void testUtils(void) {
     list_t* list = createList(sizeof(int));
     int data = 100;
     addBack(list, &data);
@@ -65,29 +65,24 @@ void testFind(void) {
     data = 300;
     addBack(list, &data);
 
-    int key = 200;
-    void* output = malloc(sizeof(int));
-    CU_ASSERT(find(list, &key, output, findInt) == ListOperationSuccess);
+    // Test for find function
+    int key = 200, output;
+    CU_ASSERT(find(list, &key, &output, findInt) == ListOperationSuccess);
 
     key = 10;
-    CU_ASSERT(find(list, &key, output, findInt) == ListNotFoundError);
+    CU_ASSERT(find(list, &key, &output, findInt) == ListNotFoundError);
 
-    destroyList(list, NULL);
-}
+    // Test for set function
+    int newValue = 47;
+    CU_ASSERT(set(list, 1, &newValue) == ListOperationSuccess);
+    removeAt(list, 1, &output);
+    CU_ASSERT(output == newValue);
 
-void testClear(void) {
-    list_t* list = createList(sizeof(int));
+    // Test list size
+    CU_ASSERT(listSize(list) == 2);
 
-    int data = 100;
-    addBack(list, &data);
-    data = 200;
-    addBack(list, &data);
-    data = 300;
-    addBack(list, &data);
-
-    CU_ASSERT(listSize(list) == 3);
+    // Test clear list
     clearList(list, NULL);
-    
     CU_ASSERT(isListEmpty(list) == true);
     CU_ASSERT(listSize(list) == 0);
 
@@ -104,8 +99,7 @@ int main(void) {
 
     CU_add_test(suiteListTest, "list insert tests", testInserts);
     CU_add_test(suiteListTest, "list remove tests", testRemoves);
-    CU_add_test(suiteListTest, "test find", testFind);
-    CU_add_test(suiteListTest, "test clear", testClear);
+    CU_add_test(suiteListTest, "test find", testUtils);
 
     CU_basic_run_tests();
     CU_cleanup_registry();
