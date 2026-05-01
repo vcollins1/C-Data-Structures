@@ -92,6 +92,28 @@ void testUtils(void) {
     destroyList(list, NULL);
 }
 
+void testIterator(void) {
+    list_t* list = createList(sizeof(int));
+
+    int a = 1, b = 2, c = 3;
+    unshift(list, &a);
+    unshift(list, &b);
+    unshift(list, &c);
+
+    listIter_t* iter = createListIterator(list);
+    int data, currentValue = 0;
+    int expectedValues[] = {3, 2, 1};
+    
+    while (hasNext(iter)) {
+        getListIteratorData(iter, &data);
+        CU_ASSERT(data == expectedValues[currentValue++]);
+        listIteratorNext(iter);
+    }
+    
+    destroyListIterator(iter);
+    destroyList(list, NULL);
+}
+
 int main(void) {
     if (CU_initialize_registry() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "can't initialize test registry");
@@ -102,7 +124,8 @@ int main(void) {
 
     CU_add_test(suiteListTest, "list insert tests", testInserts);
     CU_add_test(suiteListTest, "list remove tests", testRemoves);
-    CU_add_test(suiteListTest, "test find", testUtils);
+    CU_add_test(suiteListTest, "List utils tests", testUtils);
+    CU_add_test(suiteListTest, "List iterator tests", testIterator);
 
     CU_basic_run_tests();
     CU_cleanup_registry();
