@@ -11,19 +11,22 @@ void testInserts(void) {
     list_t* list = createList(sizeof(int));
 
     int data = 10;
-    unshift(list, &data);
+    insertAt(list, 0, &data);
     CU_ASSERT(listSize(list) == 1);
+
+    unshift(list, &data);
+    CU_ASSERT(listSize(list) == 2);
 
     data = 100;
     addBack(list, &data);
-    CU_ASSERT(listSize(list) == 2);
+    CU_ASSERT(listSize(list) == 3);
 
     data = 25;
     insertAt(list, 1, &data);
-    CU_ASSERT(listSize(list) == 3);
+    CU_ASSERT(listSize(list) == 4);
 
     data = 1000;
-    CU_ASSERT(insertAt(list, 5, &data) == ListIndexError);
+    CU_ASSERT(insertAt(list, 6, &data) == ListIndexError);
 
     destroyList(list, NULL);
 }
