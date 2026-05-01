@@ -1,26 +1,15 @@
 #include <CUnit/Basic.h>
+#include <err.h>
 #include <stdlib.h>
 #include "list.h"
-
-list_t* list;
-
-int initFunc(void) {
-    list = createList(sizeof(int));
-    if (!list) return 1;
-
-    return 0;
-}
-
-int cleanFunc(void) {
-    destroyList(list, NULL);
-    return 0;
-}
 
 bool findInt(void* a, void* key) {
     return *(int*)a == *(int*)key;
 }
 
 void testInserts(void) {
+    list_t* list = createList(sizeof(int));
+
     int data = 10;
     unshift(list, &data);
     CU_ASSERT(listSize(list) == 1);
@@ -35,27 +24,40 @@ void testInserts(void) {
 
     data = 1000;
     CU_ASSERT(insertAt(list, 5, &data) == ListIndexError);
+
+    destroyList(list, NULL);
 }
 
 void testRemoves(void) {
-    void* data = malloc(sizeof(int));
-    removeAt(list, 1, data);
-    CU_ASSERT(*(int*)data == 25);
+    list_t* list = createList(sizeof(int));
+    int data = 10;
+    unshift(list, &data);
+    data = 100;
+    addBack(list, &data);
+    data = 25;
+    insertAt(list, 1, &data);
 
-    shift(list, data);
-    CU_ASSERT(*(int*)data == 10);
+    int output;
+    removeAt(list, 1, &output);
+    CU_ASSERT(output == 25);
 
-    CU_ASSERT(removeAt(list, 1, data) == ListIndexError);
+    shift(list, &output);
+    CU_ASSERT(output == 10);
 
-    removeBack(list, data);
-    CU_ASSERT(*(int*)data == 100);
+    CU_ASSERT(removeAt(list, 1, &output) == ListIndexError);
 
-    CU_ASSERT(shift(list, data) == ListEmptyError);
-    CU_ASSERT(removeBack(list, data) == ListEmptyError);
-    CU_ASSERT(removeAt(list, 0, data) == ListEmptyError);
+    removeBack(list, &output);
+    CU_ASSERT(output == 100);
+
+    CU_ASSERT(shift(list, &output) == ListEmptyError);
+    CU_ASSERT(removeBack(list, &output) == ListEmptyError);
+    CU_ASSERT(removeAt(list, 0, &output) == ListEmptyError);
+
+    destroyList(list, NULL);
 }
 
 void testFind(void) {
+    list_t* list = createList(sizeof(int));
     int data = 100;
     addBack(list, &data);
     data = 200;
@@ -69,49 +71,43 @@ void testFind(void) {
 
     key = 10;
     CU_ASSERT(find(list, &key, output, findInt) == ListNotFoundError);
+
+    destroyList(list, NULL);
 }
 
 void testClear(void) {
+    list_t* list = createList(sizeof(int));
+
+    int data = 100;
+    addBack(list, &data);
+    data = 200;
+    addBack(list, &data);
+    data = 300;
+    addBack(list, &data);
+
     CU_ASSERT(listSize(list) == 3);
     clearList(list, NULL);
     
+    CU_ASSERT(isListEmpty(list) == true);
     CU_ASSERT(listSize(list) == 0);
+
+    destroyList(list, NULL);
 }
 
 int main(void) {
-    if (CU_initialize_registry() != CUE_SUCCESS) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
+    if (CU_initialize_registry() != CUE_SUCCESS)
+        errx(EXIT_FAILURE, "can't initialize test registry");
 
-    CU_pSuite suiteSLL = CU_add_suite("List Test Suite", initFunc, cleanFunc);
-    if (!suiteSLL) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
+    CU_pSuite suiteListTest = CU_add_suite("List Test Suite", NULL, NULL);
+    if (CU_get_error() != CUE_SUCCESS)
+        errx(EXIT_FAILURE, "%s", CU_get_error_msg());
 
-    if (!CU_add_test(suiteSLL, "list insert tests", testInserts)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
-
-    if (!CU_add_test(suiteSLL, "list remove tests", testRemoves)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
-
-    if (!CU_add_test(suiteSLL, "test find", testFind)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
-
-    if (!CU_add_test(suiteSLL, "test clear", testClear)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
-
+    CU_add_test(suiteListTest, "list insert tests", testInserts);
+    CU_add_test(suiteListTest, "list remove tests", testRemoves);
+    CU_add_test(suiteListTest, "test find", testFind);
+    CU_add_test(suiteListTest, "test clear", testClear);
 
     CU_basic_run_tests();
     CU_cleanup_registry();
-    return CU_get_error();
+    return 0;
 }
