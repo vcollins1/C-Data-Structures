@@ -10,12 +10,23 @@ struct Vec {
     void** dataArray;
 };
 
-vec_t *createVec(size_t dataSize) {
+void resizeCapacity(vec_t* vec, size_t capacity) {
+    void** newDataArray = malloc(sizeof(*vec->dataArray) * capacity);
+    if (newDataArray == NULL) return;
+
+    memcpy(newDataArray, vec->dataArray, sizeof(*vec->dataArray) * vec->size);
+    
+    free(vec->dataArray);
+    vec->dataArray = newDataArray;
+    vec->capacity = capacity;
+}
+
+vec_t* createVec(size_t dataSize) {
     vec_t* vec = malloc(sizeof(vec_t));
     vec->capacity = 1;
     vec->size = 0;
     vec->dataSize = dataSize;
-    vec->dataArray = malloc(sizeof(vec->dataArray) * vec->capacity);
+    vec->dataArray = malloc(sizeof(*vec->dataArray) * vec->capacity);
 
     return vec;
 }
@@ -27,7 +38,10 @@ void destroyVec(vec_t* vec, clearCallback func) {
 }
 
 void pushBack(vec_t* vec, void* data) {
-    if (vec->size == vec->capacity) return;
+    if (vec->size == vec->capacity) {
+        resizeCapacity(vec, 2 * vec->capacity);
+    }
+
     vec->dataArray[vec->size] = malloc(vec->dataSize);
     memcpy(vec->dataArray[vec->size], data, vec->dataSize);
     ++vec->size;
