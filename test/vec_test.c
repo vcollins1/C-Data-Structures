@@ -1,0 +1,57 @@
+#include <CUnit/Basic.h>
+#include <err.h>
+#include <stdlib.h>
+#include "vec.h"
+
+void testVecElementAdd(void) {
+    vec_t* vec = createVec(sizeof(int));
+    int a = 47, b = 100, c = 101, d = 90, e = 1000, f = 10, g = 11, h = 808;
+    pushBack(vec, &a);
+    CU_ASSERT(vecSize(vec) == 1);
+    CU_ASSERT(vecCapacity(vec) == 1);
+
+    pushBack(vec, &b);
+    CU_ASSERT(vecSize(vec) == 2);
+    CU_ASSERT(vecCapacity(vec) == 2);
+
+    pushBack(vec, &c);
+    CU_ASSERT(vecSize(vec) == 3);
+    CU_ASSERT(vecCapacity(vec) == 4);
+
+    pushBack(vec, &d);
+    CU_ASSERT(vecSize(vec) == 4);
+    CU_ASSERT(vecCapacity(vec) == 4);
+
+    insert(vec, 0, &e);
+    CU_ASSERT(vecSize(vec) == 5);
+    CU_ASSERT(vecCapacity(vec) == 8);
+
+    insert(vec, 5, &f);
+    CU_ASSERT(vecSize(vec) == 6);
+    CU_ASSERT(vecCapacity(vec) == 8);
+
+    insert(vec, 2, &g);
+    CU_ASSERT(vecSize(vec) == 7);
+    CU_ASSERT(vecCapacity(vec) == 8);
+
+    CU_ASSERT(insert(vec, 8, &h) == VecIndexError);
+    CU_ASSERT(vecSize(vec) == 7);
+    CU_ASSERT(vecCapacity(vec) == 8);
+
+    destroyVec(vec, NULL);
+}
+
+int main(void) {
+    if (CU_initialize_registry() != CUE_SUCCESS)
+        errx(EXIT_FAILURE, "can't initialize test registry");
+
+    CU_pSuite suiteListTest = CU_add_suite("Vec Test Suite", NULL, NULL);
+    if (CU_get_error() != CUE_SUCCESS)
+        errx(EXIT_FAILURE, "%s", CU_get_error_msg());
+
+    CU_add_test(suiteListTest, "Test fior adding elements to a vec type", testVecElementAdd);
+    
+    CU_basic_run_tests();
+    CU_cleanup_registry();
+    return 0;
+}

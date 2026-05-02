@@ -79,6 +79,14 @@ void clearVec(vec_t *vec, clearCallback func) {
     vec->size = 0;
 }
 
+size_t vecSize(vec_t* vec) {
+    return vec->size;
+}
+
+size_t vecCapacity(vec_t* vec) {
+    return vec->capacity;
+}
+
 void printVec(vec_t* vec, printCallback func) {
     printf("[");
     char* sep = "";

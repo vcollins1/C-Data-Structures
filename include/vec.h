@@ -24,6 +24,8 @@ VecStatusCode pushBack(vec_t* vec, void* data);
 VecStatusCode insert(vec_t* vec, size_t index, void* data);
 
 void clearVec(vec_t* vec, clearCallback func);
+size_t vecSize(vec_t* vec);
+size_t vecCapacity(vec_t* vec);
 
 void printVec(vec_t* vec, printCallback func);
 
