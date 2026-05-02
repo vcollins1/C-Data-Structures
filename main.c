@@ -9,7 +9,7 @@ void printInt(const void* a) {
 int main(void) {
     printf("Data Structures Implementation using the c programming language\n");
     vec_t* vec = createVec(sizeof(int));
-    int a = 47, b = 100, c = 101, d = 90;
+    int a = 47, b = 100, c = 101, d = 90, e = 1000;
     pushBack(vec, &a);
 
     pushBack(vec, &b);
@@ -17,6 +17,9 @@ int main(void) {
     pushBack(vec, &c);
 
     pushBack(vec, &d);
+    printVec(vec, printInt);
+
+    insert(vec, 2, &e);
     printVec(vec, printInt);
 
     destroyVec(vec, NULL);

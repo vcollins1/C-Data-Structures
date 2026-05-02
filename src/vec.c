@@ -15,7 +15,7 @@ void resizeCapacity(vec_t* vec, size_t capacity) {
     if (newDataArray == NULL) return;
 
     memcpy(newDataArray, vec->dataArray, sizeof(*vec->dataArray) * vec->size);
-    
+
     free(vec->dataArray);
     vec->dataArray = newDataArray;
     vec->capacity = capacity;
@@ -37,14 +37,36 @@ void destroyVec(vec_t* vec, clearCallback func) {
     free(vec);
 }
 
-void pushBack(vec_t* vec, void* data) {
+VecStatusCode pushBack(vec_t* vec, void* data) {
     if (vec->size == vec->capacity) {
         resizeCapacity(vec, 2 * vec->capacity);
     }
 
     vec->dataArray[vec->size] = malloc(vec->dataSize);
+    if (!vec->dataArray[vec->size])
+        return VecMemoryError;
+
     memcpy(vec->dataArray[vec->size], data, vec->dataSize);
     ++vec->size;
+    return VecOperationSuccess;
+}
+
+VecStatusCode insert(vec_t* vec, size_t index, void* data) {
+    if (index >= vec->size) return VecIndexError;
+    if (vec->size == vec->capacity)
+        resizeCapacity(vec, 2 * vec->capacity);
+
+    vec->dataArray[vec->size] = malloc(vec->dataSize);
+    if (!vec->dataArray[vec->size])
+        return VecMemoryError;
+
+    for (size_t i = vec->size; i > index; --i) {
+        memcpy(vec->dataArray[i], vec->dataArray[i - 1], vec->dataSize);
+    }
+    
+    memcpy(vec->dataArray[index], data, vec->dataSize);
+    ++vec->size;
+    return VecOperationSuccess;
 }
 
 void clearVec(vec_t *vec, clearCallback func) {
