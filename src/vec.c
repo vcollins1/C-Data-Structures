@@ -52,7 +52,7 @@ VecStatusCode pushBack(vec_t* vec, void* data) {
 }
 
 VecStatusCode insert(vec_t* vec, size_t index, void* data) {
-    if (index >= vec->size) return VecIndexError;
+    if (index > vec->size) return VecIndexError;
     if (vec->size == vec->capacity)
         resizeCapacity(vec, 2 * vec->capacity);
 
