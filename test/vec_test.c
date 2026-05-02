@@ -41,6 +41,43 @@ void testVecElementAdd(void) {
     destroyVec(vec, NULL);
 }
 
+void testVecElementRemove(void) {
+    vec_t* vec = createVec(sizeof(int));
+    int a = 47, b = 100, c = 101, d = 90, e = 1000, output;
+    pushBack(vec, &a);
+    pushBack(vec, &b);
+    pushBack(vec, &c);
+    pushBack(vec, &d);
+    pushBack(vec, &e);
+
+    popBack(vec, &output);
+    CU_ASSERT(output == 1000);
+    CU_ASSERT(vecSize(vec) == 4);
+
+    popBack(vec, &output);
+    CU_ASSERT(output == 90);
+    CU_ASSERT(vecSize(vec) == 3);
+
+    popBack(vec, &output);
+    CU_ASSERT(output == 101);
+    CU_ASSERT(vecSize(vec) == 2);
+    CU_ASSERT(vecCapacity(vec) == 4);
+
+    popBack(vec, &output);
+    CU_ASSERT(output == 100);
+    CU_ASSERT(vecSize(vec) == 1);
+    CU_ASSERT(vecCapacity(vec) == 2);
+
+    popBack(vec, &output);
+    CU_ASSERT(output == 47);
+    CU_ASSERT(vecSize(vec) == 0);
+    CU_ASSERT(vecCapacity(vec) == 1);
+
+    CU_ASSERT(popBack(vec, &output) == VecEmptyError);
+
+    destroyVec(vec, NULL);
+}
+
 int main(void) {
     if (CU_initialize_registry() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "can't initialize test registry");
@@ -49,7 +86,8 @@ int main(void) {
     if (CU_get_error() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "%s", CU_get_error_msg());
 
-    CU_add_test(suiteListTest, "Test fior adding elements to a vec type", testVecElementAdd);
+    CU_add_test(suiteListTest, "Test for adding elements to a vec type", testVecElementAdd);
+    CU_add_test(suiteListTest, "Test for removing elements to a vec type", testVecElementRemove);
     
     CU_basic_run_tests();
     CU_cleanup_registry();

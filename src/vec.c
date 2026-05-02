@@ -43,6 +43,8 @@ VecStatusCode pushBack(vec_t* vec, void* data) {
     }
 
     vec->dataArray[vec->size] = malloc(vec->dataSize);
+    if (!vec->dataArray[vec->size]) return VecMemoryError;
+
     if (!vec->dataArray[vec->size])
         return VecMemoryError;
 
@@ -66,6 +68,19 @@ VecStatusCode insert(vec_t* vec, size_t index, void* data) {
     
     memcpy(vec->dataArray[index], data, vec->dataSize);
     ++vec->size;
+    return VecOperationSuccess;
+}
+
+VecStatusCode popBack(vec_t* vec, void *output) {
+    if (vec->size == 0) return VecEmptyError;
+
+    --vec->size;
+    memcpy(output, vec->dataArray[vec->size], vec->dataSize);
+    free(vec->dataArray[vec->size]);
+
+    if (vec->size == vec->capacity/4)
+        resizeCapacity(vec, vec->capacity/2);
+
     return VecOperationSuccess;
 }
 
