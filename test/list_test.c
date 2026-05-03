@@ -8,110 +8,110 @@ bool findInt(void* a, void* key) {
 }
 
 void testInserts(void) {
-    list_t* list = createList(sizeof(int));
+    list_t* list = list_create(sizeof(int));
 
     int data = 10;
-    insertAt(list, 0, &data);
-    CU_ASSERT(listSize(list) == 1);
+    list_insert_at(list, 0, &data);
+    CU_ASSERT(list_size(list) == 1);
 
-    unshift(list, &data);
-    CU_ASSERT(listSize(list) == 2);
+    list_unshift(list, &data);
+    CU_ASSERT(list_size(list) == 2);
 
     data = 100;
-    addBack(list, &data);
-    CU_ASSERT(listSize(list) == 3);
+    list_add_back(list, &data);
+    CU_ASSERT(list_size(list) == 3);
 
     data = 25;
-    insertAt(list, 1, &data);
-    CU_ASSERT(listSize(list) == 4);
+    list_insert_at(list, 1, &data);
+    CU_ASSERT(list_size(list) == 4);
 
     data = 1000;
-    CU_ASSERT(insertAt(list, 6, &data) == ListIndexError);
+    CU_ASSERT(list_insert_at(list, 6, &data) == LIST_INDEX_ERROR);
 
-    destroyList(list, NULL);
+    list_destroy(list, NULL);
 }
 
 void testRemoves(void) {
-    list_t* list = createList(sizeof(int));
+    list_t* list = list_create(sizeof(int));
     int data = 10;
-    unshift(list, &data);
+    list_unshift(list, &data);
     data = 100;
-    addBack(list, &data);
+    list_add_back(list, &data);
     data = 25;
-    insertAt(list, 1, &data);
+    list_insert_at(list, 1, &data);
 
     int output;
-    removeAt(list, 1, &output);
+    list_remove_at(list, 1, &output);
     CU_ASSERT(output == 25);
 
-    shift(list, &output);
+    list_shift(list, &output);
     CU_ASSERT(output == 10);
 
-    CU_ASSERT(removeAt(list, 1, &output) == ListIndexError);
+    CU_ASSERT(list_remove_at(list, 1, &output) == LIST_INDEX_ERROR);
 
-    removeBack(list, &output);
+    list_remove_back(list, &output);
     CU_ASSERT(output == 100);
 
-    CU_ASSERT(shift(list, &output) == ListEmptyError);
-    CU_ASSERT(removeBack(list, &output) == ListEmptyError);
-    CU_ASSERT(removeAt(list, 0, &output) == ListEmptyError);
+    CU_ASSERT(list_shift(list, &output) == LIST_EMPTY_ERROR);
+    CU_ASSERT(list_remove_back(list, &output) == LIST_EMPTY_ERROR);
+    CU_ASSERT(list_remove_at(list, 0, &output) == LIST_EMPTY_ERROR);
 
-    destroyList(list, NULL);
+    list_destroy(list, NULL);
 }
 
 void testUtils(void) {
-    list_t* list = createList(sizeof(int));
+    list_t* list = list_create(sizeof(int));
     int data = 100;
-    addBack(list, &data);
+    list_add_back(list, &data);
     data = 200;
-    addBack(list, &data);
+    list_add_back(list, &data);
     data = 300;
-    addBack(list, &data);
+    list_add_back(list, &data);
 
     // Test for find function
     int key = 200, output;
-    CU_ASSERT(find(list, &key, &output, findInt) == ListOperationSuccess);
+    CU_ASSERT(list_find(list, &key, &output, findInt) == LIST_SUCCESS_OK);
 
     key = 10;
-    CU_ASSERT(find(list, &key, &output, findInt) == ListNotFoundError);
+    CU_ASSERT(list_find(list, &key, &output, findInt) == LIST_ELEMENT_NOT_FOUND);
 
     // Test for set function
     int newValue = 47;
-    CU_ASSERT(set(list, 1, &newValue) == ListOperationSuccess);
-    removeAt(list, 1, &output);
+    CU_ASSERT(list_set(list, 1, &newValue) == LIST_SUCCESS_OK);
+    list_remove_at(list, 1, &output);
     CU_ASSERT(output == newValue);
 
     // Test list size
-    CU_ASSERT(listSize(list) == 2);
+    CU_ASSERT(list_size(list) == 2);
 
     // Test clear list
-    clearList(list, NULL);
-    CU_ASSERT(isListEmpty(list) == true);
-    CU_ASSERT(listSize(list) == 0);
+    list_clear(list, NULL);
+    CU_ASSERT(is_list_empty(list) == true);
+    CU_ASSERT(list_size(list) == 0);
 
-    destroyList(list, NULL);
+    list_destroy(list, NULL);
 }
 
 void testIterator(void) {
-    list_t* list = createList(sizeof(int));
+    list_t* list = list_create(sizeof(int));
 
     int a = 1, b = 2, c = 3;
-    unshift(list, &a);
-    unshift(list, &b);
-    unshift(list, &c);
+    list_unshift(list, &a);
+    list_unshift(list, &b);
+    list_unshift(list, &c);
 
-    listIter_t* iter = createListIterator(list);
+    listIter_t* iter = list_create_iter(list);
     int data, currentValue = 0;
     int expectedValues[] = {3, 2, 1};
     
-    while (listIterHasNext(iter)) {
-        getListIteratorData(iter, &data);
+    while (list_iter_has_next(iter)) {
+        get_list_iter_data(iter, &data);
         CU_ASSERT(data == expectedValues[currentValue++]);
-        listIteratorNext(iter);
+        list_iter_next(iter);
     }
     
-    destroyListIterator(iter);
-    destroyList(list, NULL);
+    list_destroy_iter(iter);
+    list_destroy(list, NULL);
 }
 
 int main(void) {

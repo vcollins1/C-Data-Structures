@@ -5,45 +5,45 @@
 #include <stdbool.h>
 
 typedef enum {
-    VecOperationSuccess = 0,
-    VecRemoveError,
-    VecMemoryError,
-    VecIndexError,
-    VecEmptyError,
-    VecNotFoundError,
-} VecStatusCode;
+    VEC_SUCCESS_OK = 0,
+    VEC_REMOVE_ERROR,
+    VEC_MEMORY_ERROR,
+    VEC_INDEX_ERROR,
+    VEC_EMPTY_ERROR,
+    VEC_ELEMENT_NOT_FOUND,
+} VecStatusCode_t;
 
 typedef struct Vec vec_t;
-typedef struct VecIterator vecIter_t;
+typedef struct VecIter vecIter_t;
 
-typedef void (*printCallback)(const void* data);
-typedef void (*clearCallback)(void* data);
+typedef void (*print_callback)(const void* data);
+typedef void (*clear_callback)(void* data);
 
 // Create/Destroy vec_t
-vec_t* createVec(size_t dataSize);
-void destroyVec(vec_t* vec, clearCallback func);
+vec_t* vec_create(size_t dataSize);
+void vec_destroy(vec_t* vec, clear_callback func);
 
 // vec_t modifiers
-VecStatusCode pushBack(vec_t* vec, void* data);
-VecStatusCode insert(vec_t* vec, size_t index, void* data);
-VecStatusCode popBack(vec_t* vec, void* output);
-void clearVec(vec_t* vec, clearCallback func);
+VecStatusCode_t vec_push_back(vec_t* vec, void* data);
+VecStatusCode_t vec_insert(vec_t* vec, size_t index, void* data);
+VecStatusCode_t vec_pop_back(vec_t* vec, void* output);
+void vec_clear(vec_t* vec, clear_callback func);
 
 // vec_t data access
-size_t vecSize(vec_t* vec);
-size_t vecCapacity(vec_t* vec);
-VecStatusCode front(vec_t* vec, void* output);
-VecStatusCode back(vec_t* vec, void* output);
-VecStatusCode at(vec_t* vec, size_t index, void* output);
+size_t vec_size(vec_t* vec);
+size_t vec_capacity(vec_t* vec);
+VecStatusCode_t vec_front(vec_t* vec, void* output);
+VecStatusCode_t vec_back(vec_t* vec, void* output);
+VecStatusCode_t vec_at(vec_t* vec, size_t index, void* output);
 
 // vec_t iterator
-vecIter_t* createVecIterator(vec_t* vec);
-void destroyVecIterator(vecIter_t* iter);
-void vecIteratorNext(vecIter_t* iter);
-void getVecIteratorData(vecIter_t* iter, void* output);
-bool vecIterHasNext(vecIter_t* iter);
+vecIter_t* vec_create_iter(vec_t* vec);
+void vec_destroy_iter(vecIter_t* iter);
+void vec_iter_next(vecIter_t* iter);
+void get_vec_iter_data(vecIter_t* iter, void* output);
+bool vec_iter_has_next(vecIter_t* iter);
 
 // Display vec_t
-void printVec(vec_t* vec, printCallback func);
+void vec_print(vec_t* vec, print_callback func);
 
 #endif

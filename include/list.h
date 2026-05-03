@@ -6,52 +6,52 @@
 
 // List data types
 typedef struct List list_t;
-typedef struct ListIterator listIter_t;
+typedef struct ListIter listIter_t;
 
 // List callback functions types
-typedef void (*printCallback)(const void* data);
-typedef void (*clearCallback)(void* data);
-typedef bool (*findCallback)(void* a, void* key);
+typedef void (*print_callback)(const void* data);
+typedef void (*clear_callback)(void* data);
+typedef bool (*find_callback)(void* a, void* key);
 
 // List status and error codes
 typedef enum {
-    ListOperationSuccess = 0,
-    ListRemoveError,
-    ListMemoryError,
-    ListIndexError,
-    ListEmptyError,
-    ListNotFoundError,
-} ListStatusCode;
+    LIST_SUCCESS_OK = 0,
+    LIST_REMOVE_ERROR,
+    LIST_MEMORY_ERROR,
+    LIST_INDEX_ERROR,
+    LIST_EMPTY_ERROR,
+    LIST_ELEMENT_NOT_FOUND,
+} ListStatusCode_t;
 
 // Create and Destory List functions
-list_t* createList(size_t dataSize);
-void destroyList(list_t* list, clearCallback func);
+list_t* list_create(size_t dataSize);
+void list_destroy(list_t* list, clear_callback func);
 
 // Add elements to list
-ListStatusCode unshift(list_t* list, void* data);
-ListStatusCode addBack(list_t* list, void* data);
-ListStatusCode insertAt(list_t* list, size_t index, void* data);
+ListStatusCode_t list_unshift(list_t* list, void* data);
+ListStatusCode_t list_add_back(list_t* list, void* data);
+ListStatusCode_t list_insert_at(list_t* list, size_t index, void* data);
 
 // Remove elements from the list
-ListStatusCode shift(list_t* list, void* output);
-ListStatusCode removeBack(list_t* list, void* output);
-ListStatusCode removeAt(list_t* list, size_t index, void* output);
+ListStatusCode_t list_shift(list_t* list, void* output);
+ListStatusCode_t list_remove_back(list_t* list, void* output);
+ListStatusCode_t list_remove_at(list_t* list, size_t index, void* output);
 
 // Utility functions
-void clearList(list_t* list, clearCallback func);
-size_t listSize(list_t* list);
-bool isListEmpty(list_t* list);
-ListStatusCode find(list_t* list, void* key, void* found, findCallback func);
-ListStatusCode set(list_t* list, size_t index, void* update);
+void list_clear(list_t* list, clear_callback func);
+size_t list_size(list_t* list);
+bool is_list_empty(list_t* list);
+ListStatusCode_t list_find(list_t* list, void* key, void* found, find_callback func);
+ListStatusCode_t list_set(list_t* list, size_t index, void* update);
 
 // List iteratoion
-listIter_t* createListIterator(list_t* list);
-void destroyListIterator(listIter_t* iter);
-void listIteratorNext(listIter_t* iter);
-void getListIteratorData(listIter_t* iter, void* output);
-bool listIterHasNext(listIter_t* iter);
+listIter_t* list_create_iter(list_t* list);
+void list_destroy_iter(listIter_t* iter);
+void list_iter_next(listIter_t* iter);
+void get_list_iter_data(listIter_t* iter, void* output);
+bool list_iter_has_next(listIter_t* iter);
 
 // Display elements of list
-void printList(list_t* list, printCallback func);
+void list_print(list_t* list, print_callback func);
 
 #endif

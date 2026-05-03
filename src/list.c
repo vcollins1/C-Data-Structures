@@ -15,12 +15,12 @@ struct List {
     Node* tail;
 };
 
-struct ListIterator {
+struct ListIter {
     size_t dataSize;
     Node* current;
 };
 
-list_t* createList(size_t dataSize) {
+list_t* list_create(size_t dataSize) {
     list_t* list = malloc(sizeof(list_t));
     if (!list) return NULL;
 
@@ -31,8 +31,8 @@ list_t* createList(size_t dataSize) {
     return list;
 }
 
-void destroyList(list_t *list, clearCallback func) {
-    clearList(list, func);
+void list_destroy(list_t *list, clear_callback func) {
+    list_clear(list, func);
     free(list->head);
     free(list->tail);
     free(list);
@@ -54,9 +54,9 @@ Node* createListNode(void* data, size_t dataSize) {
 }
 
 // Add element to the front of list
-ListStatusCode unshift(list_t* list, void *data) {
+ListStatusCode_t list_unshift(list_t* list, void *data) {
     Node* newNode = createListNode(data, list->dataSize);
-    if (!newNode) return ListMemoryError;
+    if (!newNode) return LIST_MEMORY_ERROR;
 
     if (list->size == 0) {
         list->head = list->tail = newNode;
@@ -66,12 +66,12 @@ ListStatusCode unshift(list_t* list, void *data) {
     }
 
     ++list->size;
-    return ListOperationSuccess;
+    return LIST_SUCCESS_OK;
 }
 
-ListStatusCode addBack(list_t *list, void *data) {
+ListStatusCode_t list_add_back(list_t *list, void *data) {
     Node* newNode = createListNode(data, list->dataSize);
-    if (!newNode) return ListMemoryError;
+    if (!newNode) return LIST_MEMORY_ERROR;
 
     if (list->size == 0) {
         list->head = list->tail = newNode;
@@ -81,19 +81,19 @@ ListStatusCode addBack(list_t *list, void *data) {
     }
 
     ++list->size;
-    return ListOperationSuccess;
+    return LIST_SUCCESS_OK;
 }
 
-ListStatusCode insertAt(list_t *list, size_t index,  void *data) {
-    if (index > list->size) return ListIndexError;
+ListStatusCode_t list_insert_at(list_t *list, size_t index,  void *data) {
+    if (index > list->size) return LIST_INDEX_ERROR;
 
     if (index == 0) {
-        return unshift(list, data);
+        return list_unshift(list, data);
     } else if (index == list->size) {
-        return addBack(list, data);
+        return list_add_back(list, data);
     } else {
         Node* newNode = createListNode(data, list->dataSize);
-        if (!newNode) return ListMemoryError;
+        if (!newNode) return LIST_MEMORY_ERROR;
 
         Node* current = list->head;
         for (size_t i = 1; i < index; ++i)
@@ -104,11 +104,11 @@ ListStatusCode insertAt(list_t *list, size_t index,  void *data) {
     }
 
     ++list->size;
-    return ListOperationSuccess;
+    return LIST_SUCCESS_OK;
 }
 
-ListStatusCode shift(list_t *list, void *output) {
-    if (list->size == 0) return ListEmptyError;
+ListStatusCode_t list_shift(list_t *list, void *output) {
+    if (list->size == 0) return LIST_EMPTY_ERROR;
 
     Node* delete = list->head;
     memcpy(output, delete->data, list->dataSize);
@@ -122,11 +122,11 @@ ListStatusCode shift(list_t *list, void *output) {
     free(delete->data);
     free(delete);
     --list->size;
-    return ListOperationSuccess;
+    return LIST_SUCCESS_OK;
 }
 
-ListStatusCode removeBack(list_t* list, void *output) {
-    if (list->size == 0) return ListEmptyError;
+ListStatusCode_t list_remove_back(list_t* list, void *output) {
+    if (list->size == 0) return LIST_EMPTY_ERROR;
 
     Node* delete = list->tail;
     memcpy(output, list->tail->data, list->dataSize);
@@ -145,17 +145,17 @@ ListStatusCode removeBack(list_t* list, void *output) {
     free(delete->data);
     free(delete);
     --list->size;
-    return ListOperationSuccess;
+    return LIST_SUCCESS_OK;
 }
 
-ListStatusCode removeAt(list_t* list, size_t index, void *output) {
-    if (list->size == 0) return ListEmptyError;
-    if (index >= list->size) return ListIndexError;
+ListStatusCode_t list_remove_at(list_t* list, size_t index, void *output) {
+    if (list->size == 0) return LIST_EMPTY_ERROR;
+    if (index >= list->size) return LIST_INDEX_ERROR;
 
     if (index == 0) {
-        return shift(list, output);
+        return list_shift(list, output);
     } else if (index == list->size - 1) {
-        return removeBack(list, output);
+        return list_remove_back(list, output);
     } else {
         Node* previous = NULL;
         Node* delete = list->head;
@@ -171,10 +171,10 @@ ListStatusCode removeAt(list_t* list, size_t index, void *output) {
     }
 
     --list->size;
-    return ListOperationSuccess;
+    return LIST_SUCCESS_OK;
 }
 
-void clearList(list_t* list, clearCallback func) {
+void list_clear(list_t* list, clear_callback func) {
     while (list->head) {
         Node* current = list->head;
         list->head = list->head->next;
@@ -190,71 +190,71 @@ void clearList(list_t* list, clearCallback func) {
     list->head = list->tail = NULL;
 }
 
-size_t listSize(list_t* list)
+size_t list_size(list_t* list)
 {
     return list->size;
 }
 
-bool isListEmpty(list_t* list) {
+bool is_list_empty(list_t* list) {
     return list->size == 0;
 }
 
-ListStatusCode find(list_t* list, void* key, void* found, findCallback func) {
-    if (list->size == 0 || !key) return ListEmptyError;
+ListStatusCode_t list_find(list_t* list, void* key, void* found, find_callback func) {
+    if (list->size == 0 || !key) return LIST_EMPTY_ERROR;
 
     Node* current = list->head;
     while (current) {
         if (func(current->data, key)) {
             memcpy(found, current->data, list->dataSize);
-            return ListOperationSuccess;
+            return LIST_SUCCESS_OK;
         }
 
         current = current->next;
     }
 
-    return ListNotFoundError;
+    return LIST_ELEMENT_NOT_FOUND;
 }
 
-ListStatusCode set(list_t* list, size_t index, void* update) {
-    if (list->size == 0) return ListEmptyError;
-    if (index >= list->size) return ListIndexError;
+ListStatusCode_t list_set(list_t* list, size_t index, void* update) {
+    if (list->size == 0) return LIST_EMPTY_ERROR;
+    if (index >= list->size) return LIST_INDEX_ERROR;
 
     Node* current = list->head;
     for (size_t i = 0; i < index; ++i)
         current = current->next;
 
     memcpy(current->data, update, list->dataSize);
-    return ListOperationSuccess;
+    return LIST_SUCCESS_OK;
 }
 
-listIter_t* createListIterator(list_t* list) {
+listIter_t* list_create_iter(list_t* list) {
     listIter_t* iter = malloc(sizeof(listIter_t));
     iter->current = list->head;
     iter->dataSize = list->dataSize;
     return iter;
 }
 
-void destroyListIterator(listIter_t *iter) {
+void list_destroy_iter(listIter_t *iter) {
     free(iter);
 }
 
-void listIteratorNext(listIter_t* iter) {
+void list_iter_next(listIter_t* iter) {
     if (iter->current) {
         iter->current = iter->current->next;
     }
 }
 
-void getListIteratorData(listIter_t *iter, void *output) {
+void get_list_iter_data(listIter_t *iter, void *output) {
     if (iter->current) {
         memcpy(output, iter->current->data, iter->dataSize);
     }
 }
 
-bool listIterHasNext(listIter_t* iter) {
+bool list_iter_has_next(listIter_t* iter) {
     return iter->current != NULL;;
 }
 
-void printList(list_t* list, printCallback func) {
+void list_print(list_t* list, print_callback func) {
     Node* current = list->head;
 
     char* sep = "";
