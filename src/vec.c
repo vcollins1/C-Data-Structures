@@ -17,17 +17,18 @@ struct VecIterator {
     void** data;
 };
 
-void resizeCapacity(vec_t* vec, size_t capacity) {
+VecStatusCode resizeCapacity(vec_t* vec, size_t capacity) {
     if (vec->size == 0) capacity = 1;
-    
+
     void** newDataArray = malloc(sizeof(*vec->dataArray) * capacity);
-    if (newDataArray == NULL) return;
+    if (newDataArray == NULL) return VecMemoryError;
 
     memcpy(newDataArray, vec->dataArray, sizeof(*vec->dataArray) * vec->size);
 
     free(vec->dataArray);
     vec->dataArray = newDataArray;
     vec->capacity = capacity;
+    return VecOperationSuccess;
 }
 
 vec_t* createVec(size_t dataSize) {
@@ -64,8 +65,12 @@ VecStatusCode pushBack(vec_t* vec, void* data) {
 
 VecStatusCode insert(vec_t* vec, size_t index, void* data) {
     if (index > vec->size) return VecIndexError;
-    if (vec->size == vec->capacity)
-        resizeCapacity(vec, 2 * vec->capacity);
+    if (vec->size == vec->capacity) {
+        VecStatusCode status = resizeCapacity(vec, 2 * vec->capacity);
+        if(status != VecOperationSuccess)
+            return status;
+    }
+        
 
     vec->dataArray[vec->size] = malloc(vec->dataSize);
     if (!vec->dataArray[vec->size])
@@ -87,8 +92,11 @@ VecStatusCode popBack(vec_t* vec, void *output) {
     memcpy(output, vec->dataArray[vec->size], vec->dataSize);
     free(vec->dataArray[vec->size]);
 
-    if (vec->size == vec->capacity/4)
-        resizeCapacity(vec, vec->capacity/2);
+    if (vec->size == vec->capacity/4) {
+        VecStatusCode status = resizeCapacity(vec, vec->capacity/2);
+        if(status != VecOperationSuccess)
+            return status;
+    }
 
     return VecOperationSuccess;
 }
