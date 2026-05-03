@@ -125,6 +125,25 @@ size_t vecCapacity(vec_t* vec) {
     return vec->capacity;
 }
 
+VecStatusCode front(vec_t* vec, void* output) {
+    if (vec->size == 0) return VecEmptyError;
+    memcpy(output, vec->dataArray[0], vec->dataSize);
+    return VecOperationSuccess;
+}
+
+VecStatusCode back(vec_t* vec, void* output) {
+    if (vec->size == 0) return VecEmptyError;
+    memcpy(output, vec->dataArray[vec->size - 1], vec->dataSize);
+    return VecOperationSuccess;
+}
+
+VecStatusCode at(vec_t* vec, size_t index, void* output) {
+    if (vec->size == 0) return VecEmptyError;
+    if (index >= vec->size) return VecIndexError;
+    memcpy(output, vec->dataArray[index], vec->dataSize);
+    return VecOperationSuccess;
+}
+
 vecIter_t* createVecIterator(vec_t* vec) {
     vecIter_t* iter = malloc(sizeof(vecIter_t));
     if (!iter) return NULL;

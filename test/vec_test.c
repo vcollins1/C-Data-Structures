@@ -5,7 +5,7 @@
 
 void testVecElementAdd(void) {
     vec_t* vec = createVec(sizeof(int));
-    int a = 47, b = 100, c = 101, d = 90, e = 1000, f = 10, g = 11, h = 808;
+    int a = 47, b = 100, c = 101, d = 90, e = 1000, f = 10, g = 11, h = 808, output;
     pushBack(vec, &a);
     CU_ASSERT(vecSize(vec) == 1);
     CU_ASSERT(vecCapacity(vec) == 1);
@@ -23,18 +23,25 @@ void testVecElementAdd(void) {
     CU_ASSERT(vecCapacity(vec) == 4);
 
     insert(vec, 0, &e);
+    front(vec, &output);
     CU_ASSERT(vecSize(vec) == 5);
     CU_ASSERT(vecCapacity(vec) == 8);
+    CU_ASSERT(output == 1000);
 
     insert(vec, 5, &f);
+    back(vec, &output);
     CU_ASSERT(vecSize(vec) == 6);
     CU_ASSERT(vecCapacity(vec) == 8);
+    CU_ASSERT(output == 10);
 
     insert(vec, 2, &g);
+    at(vec, 2, &output);
     CU_ASSERT(vecSize(vec) == 7);
     CU_ASSERT(vecCapacity(vec) == 8);
+    CU_ASSERT(output == 11);
 
     CU_ASSERT(insert(vec, 8, &h) == VecIndexError);
+    CU_ASSERT(at(vec, 8, &h) == VecIndexError);
     CU_ASSERT(vecSize(vec) == 7);
     CU_ASSERT(vecCapacity(vec) == 8);
 
