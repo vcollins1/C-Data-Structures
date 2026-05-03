@@ -78,16 +78,39 @@ void testVecElementRemove(void) {
     destroyVec(vec, NULL);
 }
 
+void testVecIterator(void) {
+    vec_t* vec = createVec(sizeof(int));
+    int a = 47, b = 100, c = 101, d = 90, e = 1000, output, i = 0;
+    pushBack(vec, &a);
+    pushBack(vec, &b);
+    pushBack(vec, &c);
+    pushBack(vec, &d);
+    pushBack(vec, &e);
+
+    vecIter_t* iter = createVecIterator(vec);
+    int expected[] = {47, 100, 101, 90, 1000};
+
+    while (vecIterHasNext(iter)) {
+        getVecIteratorData(iter, &output);
+        CU_ASSERT(output == expected[i++]);
+        vecIteratorNext(iter);
+    }
+
+    destroyVecIterator(iter);
+    destroyVec(vec, NULL);
+}
+
 int main(void) {
     if (CU_initialize_registry() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "can't initialize test registry");
 
-    CU_pSuite suiteListTest = CU_add_suite("Vec Test Suite", NULL, NULL);
+    CU_pSuite suiteVecTest = CU_add_suite("Vec Test Suite", NULL, NULL);
     if (CU_get_error() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "%s", CU_get_error_msg());
 
-    CU_add_test(suiteListTest, "Test for adding elements to a vec type", testVecElementAdd);
-    CU_add_test(suiteListTest, "Test for removing elements to a vec type", testVecElementRemove);
+    CU_add_test(suiteVecTest, "Test for adding elements to a vec type", testVecElementAdd);
+    CU_add_test(suiteVecTest, "Test for removing elements to a vec type", testVecElementRemove);
+    CU_add_test(suiteVecTest, "Test Vec iterator", testVecIterator);
     
     CU_basic_run_tests();
     CU_cleanup_registry();

@@ -10,6 +10,13 @@ struct Vec {
     void** dataArray;
 };
 
+struct VecIterator {
+    size_t dataSize;
+    size_t current;
+    size_t last;
+    void** data;
+};
+
 void resizeCapacity(vec_t* vec, size_t capacity) {
     void** newDataArray = malloc(sizeof(*vec->dataArray) * capacity);
     if (newDataArray == NULL) return;
@@ -100,6 +107,32 @@ size_t vecSize(vec_t* vec) {
 
 size_t vecCapacity(vec_t* vec) {
     return vec->capacity;
+}
+
+vecIter_t* createVecIterator(vec_t* vec) {
+    vecIter_t* iter = malloc(sizeof(vecIter_t));
+    iter->dataSize = vec->dataSize;
+    iter->current = 0;
+    iter->last = vec->size;
+    iter->data = vec->dataArray;
+
+    return iter;
+}
+
+void destroyVecIterator(vecIter_t* iter) {
+    free(iter);
+}
+
+void vecIteratorNext(vecIter_t* iter) {
+    iter->current++;
+}
+
+void getVecIteratorData(vecIter_t* iter, void *output) {
+    memcpy(output, iter->data[iter->current], iter->dataSize);
+}
+
+bool vecIterHasNext(vecIter_t* iter) {
+    return iter->current < iter->last;
 }
 
 void printVec(vec_t* vec, printCallback func) {

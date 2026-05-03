@@ -104,7 +104,7 @@ void testIterator(void) {
     int data, currentValue = 0;
     int expectedValues[] = {3, 2, 1};
     
-    while (hasNext(iter)) {
+    while (listIterHasNext(iter)) {
         getListIteratorData(iter, &data);
         CU_ASSERT(data == expectedValues[currentValue++]);
         listIteratorNext(iter);

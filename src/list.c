@@ -250,7 +250,7 @@ void getListIteratorData(listIter_t *iter, void *output) {
     }
 }
 
-bool hasNext(listIter_t* iter) {
+bool listIterHasNext(listIter_t* iter) {
     return iter->current != NULL;;
 }
 

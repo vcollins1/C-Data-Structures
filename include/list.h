@@ -49,7 +49,7 @@ listIter_t* createListIterator(list_t* list);
 void destroyListIterator(listIter_t* iter);
 void listIteratorNext(listIter_t* iter);
 void getListIteratorData(listIter_t* iter, void* output);
-bool hasNext(listIter_t* iter);
+bool listIterHasNext(listIter_t* iter);
 
 // Display elements of list
 void printList(list_t* list, printCallback func);
