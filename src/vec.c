@@ -33,10 +33,16 @@ VecStatusCode resizeCapacity(vec_t* vec, size_t capacity) {
 
 vec_t* createVec(size_t dataSize) {
     vec_t* vec = malloc(sizeof(vec_t));
+    if (!vec) return NULL;
+
     vec->capacity = 1;
     vec->size = 0;
     vec->dataSize = dataSize;
     vec->dataArray = malloc(sizeof(*vec->dataArray) * vec->capacity);
+    if (!vec->dataArray) {
+        free(vec);
+        return NULL;
+    }
 
     return vec;
 }
