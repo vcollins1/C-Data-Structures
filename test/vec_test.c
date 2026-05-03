@@ -45,6 +45,13 @@ void testVecElementRemove(void) {
     vec_t* vec = createVec(sizeof(int));
     int a = 47, b = 100, c = 101, d = 90, e = 1000, output;
     pushBack(vec, &a);
+    popBack(vec, &output);
+    CU_ASSERT(output == 47);
+    CU_ASSERT(vecSize(vec) == 0);
+    CU_ASSERT(vecCapacity(vec) == 1);
+
+
+    pushBack(vec, &a);
     pushBack(vec, &b);
     pushBack(vec, &c);
     pushBack(vec, &d);

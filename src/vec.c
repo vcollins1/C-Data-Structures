@@ -18,6 +18,8 @@ struct VecIterator {
 };
 
 void resizeCapacity(vec_t* vec, size_t capacity) {
+    if (vec->size == 0) capacity = 1;
+    
     void** newDataArray = malloc(sizeof(*vec->dataArray) * capacity);
     if (newDataArray == NULL) return;
 
