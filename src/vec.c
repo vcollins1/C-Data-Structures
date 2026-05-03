@@ -127,15 +127,24 @@ size_t vecCapacity(vec_t* vec) {
 
 vecIter_t* createVecIterator(vec_t* vec) {
     vecIter_t* iter = malloc(sizeof(vecIter_t));
+    if (!iter) return NULL;
+
     iter->dataSize = vec->dataSize;
     iter->current = 0;
     iter->last = vec->size;
-    iter->data = vec->dataArray;
+
+    iter->data = malloc(sizeof(vec->dataArray) * vec->size);
+    if (!iter->data) {
+        free(iter);
+        return NULL;
+    }
+    memcpy(iter->data, vec->dataArray, sizeof(*vec->dataArray) * vec->size);
 
     return iter;
 }
 
 void destroyVecIterator(vecIter_t* iter) {
+    free(iter->data);
     free(iter);
 }
 
