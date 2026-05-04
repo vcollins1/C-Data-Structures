@@ -15,7 +15,7 @@ typedef void (*clear_callback)(void* data);
 typedef bool (*find_callback)(void* a, void* key);
 
 // Create and Destory List functions
-list_t* list_create(size_t dataSize);
+list_t* list_create(size_t data_size);
 void list_destroy(list_t* list, clear_callback func);
 
 // Add elements to list

@@ -10,22 +10,22 @@ typedef struct Node {
 
 struct List {
     size_t size;
-    size_t dataSize;
+    size_t data_size;
     Node* head;
     Node* tail;
 };
 
 struct ListIter {
-    size_t dataSize;
+    size_t data_size;
     Node* current;
 };
 
-list_t* list_create(size_t dataSize) {
+list_t* list_create(size_t data_size) {
     list_t* list = malloc(sizeof(list_t));
     if (!list) return NULL;
 
     list->size = 0;
-    list->dataSize = dataSize;
+    list->data_size = data_size;
     list->head = list->tail = NULL;
     
     return list;
@@ -38,24 +38,24 @@ void list_destroy(list_t *list, clear_callback func) {
     free(list);
 }
 
-Node* createListNode(void* data, size_t dataSize) {
+Node* createListNode(void* data, size_t data_size) {
     Node* newNode = malloc(sizeof(Node));
     if (!newNode) return NULL;
     newNode->next = NULL;
     
-    newNode->data = malloc(dataSize);
+    newNode->data = malloc(data_size);
     if (!newNode->data) {
         free(newNode);
         return NULL;
     }
 
-    memcpy(newNode->data, data, dataSize);
+    memcpy(newNode->data, data, data_size);
     return newNode;
 }
 
 // Add element to the front of list
 DS_StatusCode_t list_unshift(list_t* list, void *data) {
-    Node* newNode = createListNode(data, list->dataSize);
+    Node* newNode = createListNode(data, list->data_size);
     if (!newNode) return DS_MEMORY_ERROR;
 
     if (list->size == 0) {
@@ -70,7 +70,7 @@ DS_StatusCode_t list_unshift(list_t* list, void *data) {
 }
 
 DS_StatusCode_t list_add_back(list_t *list, void *data) {
-    Node* newNode = createListNode(data, list->dataSize);
+    Node* newNode = createListNode(data, list->data_size);
     if (!newNode) return DS_MEMORY_ERROR;
 
     if (list->size == 0) {
@@ -92,7 +92,7 @@ DS_StatusCode_t list_insert_at(list_t *list, size_t index,  void *data) {
     } else if (index == list->size) {
         return list_add_back(list, data);
     } else {
-        Node* newNode = createListNode(data, list->dataSize);
+        Node* newNode = createListNode(data, list->data_size);
         if (!newNode) return DS_MEMORY_ERROR;
 
         Node* current = list->head;
@@ -111,7 +111,7 @@ DS_StatusCode_t list_shift(list_t *list, void *output) {
     if (list->size == 0) return DS_EMPTY_ERROR;
 
     Node* delete = list->head;
-    memcpy(output, delete->data, list->dataSize);
+    memcpy(output, delete->data, list->data_size);
 
     if (list->size == 1) {
         list->head = list->tail = NULL;
@@ -129,7 +129,7 @@ DS_StatusCode_t list_remove_back(list_t* list, void *output) {
     if (list->size == 0) return DS_EMPTY_ERROR;
 
     Node* delete = list->tail;
-    memcpy(output, list->tail->data, list->dataSize);
+    memcpy(output, list->tail->data, list->data_size);
 
     if (list->size == 1) {
         list->head = list->tail = NULL;
@@ -165,7 +165,7 @@ DS_StatusCode_t list_remove_at(list_t* list, size_t index, void *output) {
         }
         previous->next = delete->next;
 
-        memcpy(output, delete->data, list->dataSize);
+        memcpy(output, delete->data, list->data_size);
         free(delete->data);
         free(delete);
     }
@@ -205,7 +205,7 @@ DS_StatusCode_t list_find(list_t* list, void* key, void* found, find_callback fu
     Node* current = list->head;
     while (current) {
         if (func(current->data, key)) {
-            memcpy(found, current->data, list->dataSize);
+            memcpy(found, current->data, list->data_size);
             return DS_SUCCESS_OK;
         }
 
@@ -223,14 +223,14 @@ DS_StatusCode_t list_set(list_t* list, size_t index, void* update) {
     for (size_t i = 0; i < index; ++i)
         current = current->next;
 
-    memcpy(current->data, update, list->dataSize);
+    memcpy(current->data, update, list->data_size);
     return DS_SUCCESS_OK;
 }
 
 listIter_t* list_create_iter(list_t* list) {
     listIter_t* iter = malloc(sizeof(listIter_t));
     iter->current = list->head;
-    iter->dataSize = list->dataSize;
+    iter->data_size = list->data_size;
     return iter;
 }
 
@@ -246,7 +246,7 @@ void list_iter_next(listIter_t* iter) {
 
 void get_list_iter_data(listIter_t *iter, void *output) {
     if (iter->current) {
-        memcpy(output, iter->current->data, iter->dataSize);
+        memcpy(output, iter->current->data, iter->data_size);
     }
 }
 

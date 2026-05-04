@@ -12,7 +12,7 @@ typedef void (*print_callback)(const void* data);
 typedef void (*clear_callback)(void* data);
 
 // Create/Destroy vec_t
-vec_t* vec_create(size_t dataSize);
+vec_t* vec_create(size_t data_size);
 void vec_destroy(vec_t* vec, clear_callback func);
 
 // vec_t modifiers
