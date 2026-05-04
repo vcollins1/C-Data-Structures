@@ -3,13 +3,10 @@
 // Defines API for vector data structure
 #include <stddef.h>
 #include <stdbool.h>
-#include "ds_status_code.h"
+#include "ds_utils.h"
 
 typedef struct Vec vec_t;
 typedef struct VecIter vecIter_t;
-
-typedef void (*print_callback)(const void* data);
-typedef void (*clear_callback)(void* data);
 
 // Create/Destroy vec_t
 vec_t* vec_create(size_t data_size);

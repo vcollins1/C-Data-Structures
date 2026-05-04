@@ -3,16 +3,11 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include "ds_status_code.h"
+#include "ds_utils.h"
 
 // List data types
 typedef struct List list_t;
 typedef struct ListIter listIter_t;
-
-// List callback functions types
-typedef void (*print_callback)(const void* data);
-typedef void (*clear_callback)(void* data);
-typedef bool (*find_callback)(void* a, void* key);
 
 // Create and Destory List functions
 list_t* list_create(size_t data_size);
