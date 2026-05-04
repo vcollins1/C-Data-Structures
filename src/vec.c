@@ -17,18 +17,18 @@ struct VecIter {
     void** data;
 };
 
-VecStatusCode_t resizeCapacity(vec_t* vec, size_t capacity) {
+DS_StatusCode_t resizeCapacity(vec_t* vec, size_t capacity) {
     if (vec->size == 0) capacity = 1;
 
     void** newDataArray = malloc(sizeof(*vec->dataArray) * capacity);
-    if (newDataArray == NULL) return VEC_MEMORY_ERROR;
+    if (newDataArray == NULL) return DS_MEMORY_ERROR;
 
     memcpy(newDataArray, vec->dataArray, sizeof(*vec->dataArray) * vec->size);
 
     free(vec->dataArray);
     vec->dataArray = newDataArray;
     vec->capacity = capacity;
-    return VEC_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
 vec_t* vec_create(size_t dataSize) {
@@ -53,34 +53,34 @@ void vec_destroy(vec_t* vec, clear_callback func) {
     free(vec);
 }
 
-VecStatusCode_t vec_push_back(vec_t* vec, void* data) {
+DS_StatusCode_t vec_push_back(vec_t* vec, void* data) {
     if (vec->size == vec->capacity) {
         resizeCapacity(vec, 2 * vec->capacity);
     }
 
     vec->dataArray[vec->size] = malloc(vec->dataSize);
-    if (!vec->dataArray[vec->size]) return VEC_MEMORY_ERROR;
+    if (!vec->dataArray[vec->size]) return DS_MEMORY_ERROR;
 
     if (!vec->dataArray[vec->size])
-        return VEC_MEMORY_ERROR;
+        return DS_MEMORY_ERROR;
 
     memcpy(vec->dataArray[vec->size], data, vec->dataSize);
     ++vec->size;
-    return VEC_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-VecStatusCode_t vec_insert(vec_t* vec, size_t index, void* data) {
-    if (index > vec->size) return VEC_INDEX_ERROR;
+DS_StatusCode_t vec_insert(vec_t* vec, size_t index, void* data) {
+    if (index > vec->size) return DS_INDEX_ERROR;
     if (vec->size == vec->capacity) {
-        VecStatusCode_t status = resizeCapacity(vec, 2 * vec->capacity);
-        if(status != VEC_SUCCESS_OK)
+        DS_StatusCode_t status = resizeCapacity(vec, 2 * vec->capacity);
+        if(status != DS_SUCCESS_OK)
             return status;
     }
         
 
     vec->dataArray[vec->size] = malloc(vec->dataSize);
     if (!vec->dataArray[vec->size])
-        return VEC_MEMORY_ERROR;
+        return DS_MEMORY_ERROR;
 
     for (size_t i = vec->size; i > index; --i) {
         memcpy(vec->dataArray[i], vec->dataArray[i - 1], vec->dataSize);
@@ -88,23 +88,23 @@ VecStatusCode_t vec_insert(vec_t* vec, size_t index, void* data) {
     
     memcpy(vec->dataArray[index], data, vec->dataSize);
     ++vec->size;
-    return VEC_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-VecStatusCode_t vec_pop_back(vec_t* vec, void *output) {
-    if (vec->size == 0) return VEC_EMPTY_ERROR;
+DS_StatusCode_t vec_pop_back(vec_t* vec, void *output) {
+    if (vec->size == 0) return DS_EMPTY_ERROR;
 
     --vec->size;
     memcpy(output, vec->dataArray[vec->size], vec->dataSize);
     free(vec->dataArray[vec->size]);
 
     if (vec->size == vec->capacity/4) {
-        VecStatusCode_t status = resizeCapacity(vec, vec->capacity/2);
-        if(status != VEC_SUCCESS_OK)
+        DS_StatusCode_t status = resizeCapacity(vec, vec->capacity/2);
+        if(status != DS_SUCCESS_OK)
             return status;
     }
 
-    return VEC_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
 void vec_clear(vec_t *vec, clear_callback func) {
@@ -125,23 +125,23 @@ size_t vec_capacity(vec_t* vec) {
     return vec->capacity;
 }
 
-VecStatusCode_t vec_front(vec_t* vec, void* output) {
-    if (vec->size == 0) return VEC_EMPTY_ERROR;
+DS_StatusCode_t vec_front(vec_t* vec, void* output) {
+    if (vec->size == 0) return DS_EMPTY_ERROR;
     memcpy(output, vec->dataArray[0], vec->dataSize);
-    return VEC_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-VecStatusCode_t vec_back(vec_t* vec, void* output) {
-    if (vec->size == 0) return VEC_EMPTY_ERROR;
+DS_StatusCode_t vec_back(vec_t* vec, void* output) {
+    if (vec->size == 0) return DS_EMPTY_ERROR;
     memcpy(output, vec->dataArray[vec->size - 1], vec->dataSize);
-    return VEC_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-VecStatusCode_t vec_at(vec_t* vec, size_t index, void* output) {
-    if (vec->size == 0) return VEC_EMPTY_ERROR;
-    if (index >= vec->size) return VEC_INDEX_ERROR;
+DS_StatusCode_t vec_at(vec_t* vec, size_t index, void* output) {
+    if (vec->size == 0) return DS_EMPTY_ERROR;
+    if (index >= vec->size) return DS_INDEX_ERROR;
     memcpy(output, vec->dataArray[index], vec->dataSize);
-    return VEC_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
 vecIter_t* vec_create_iter(vec_t* vec) {

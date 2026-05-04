@@ -3,15 +3,7 @@
 // Defines API for vector data structure
 #include <stddef.h>
 #include <stdbool.h>
-
-typedef enum {
-    VEC_SUCCESS_OK = 0,
-    VEC_REMOVE_ERROR,
-    VEC_MEMORY_ERROR,
-    VEC_INDEX_ERROR,
-    VEC_EMPTY_ERROR,
-    VEC_ELEMENT_NOT_FOUND,
-} VecStatusCode_t;
+#include "ds_status_code.h"
 
 typedef struct Vec vec_t;
 typedef struct VecIter vecIter_t;
@@ -24,17 +16,17 @@ vec_t* vec_create(size_t dataSize);
 void vec_destroy(vec_t* vec, clear_callback func);
 
 // vec_t modifiers
-VecStatusCode_t vec_push_back(vec_t* vec, void* data);
-VecStatusCode_t vec_insert(vec_t* vec, size_t index, void* data);
-VecStatusCode_t vec_pop_back(vec_t* vec, void* output);
+DS_StatusCode_t vec_push_back(vec_t* vec, void* data);
+DS_StatusCode_t vec_insert(vec_t* vec, size_t index, void* data);
+DS_StatusCode_t vec_pop_back(vec_t* vec, void* output);
 void vec_clear(vec_t* vec, clear_callback func);
 
 // vec_t data access
 size_t vec_size(vec_t* vec);
 size_t vec_capacity(vec_t* vec);
-VecStatusCode_t vec_front(vec_t* vec, void* output);
-VecStatusCode_t vec_back(vec_t* vec, void* output);
-VecStatusCode_t vec_at(vec_t* vec, size_t index, void* output);
+DS_StatusCode_t vec_front(vec_t* vec, void* output);
+DS_StatusCode_t vec_back(vec_t* vec, void* output);
+DS_StatusCode_t vec_at(vec_t* vec, size_t index, void* output);
 
 // vec_t iterator
 vecIter_t* vec_create_iter(vec_t* vec);

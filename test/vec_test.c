@@ -40,8 +40,8 @@ void testVecElementAdd(void) {
     CU_ASSERT(vec_capacity(vec) == 8);
     CU_ASSERT(output == 11);
 
-    CU_ASSERT(vec_insert(vec, 8, &h) == VEC_INDEX_ERROR);
-    CU_ASSERT(vec_at(vec, 8, &h) == VEC_INDEX_ERROR);
+    CU_ASSERT(vec_insert(vec, 8, &h) == DS_INDEX_ERROR);
+    CU_ASSERT(vec_at(vec, 8, &h) == DS_INDEX_ERROR);
     CU_ASSERT(vec_size(vec) == 7);
     CU_ASSERT(vec_capacity(vec) == 8);
 
@@ -87,7 +87,7 @@ void testVecElementRemove(void) {
     CU_ASSERT(vec_size(vec) == 0);
     CU_ASSERT(vec_capacity(vec) == 1);
 
-    CU_ASSERT(vec_pop_back(vec, &output) == VEC_EMPTY_ERROR);
+    CU_ASSERT(vec_pop_back(vec, &output) == DS_EMPTY_ERROR);
 
     vec_destroy(vec, NULL);
 }

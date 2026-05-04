@@ -26,7 +26,7 @@ void testInserts(void) {
     CU_ASSERT(list_size(list) == 4);
 
     data = 1000;
-    CU_ASSERT(list_insert_at(list, 6, &data) == LIST_INDEX_ERROR);
+    CU_ASSERT(list_insert_at(list, 6, &data) == DS_INDEX_ERROR);
 
     list_destroy(list, NULL);
 }
@@ -47,14 +47,14 @@ void testRemoves(void) {
     list_shift(list, &output);
     CU_ASSERT(output == 10);
 
-    CU_ASSERT(list_remove_at(list, 1, &output) == LIST_INDEX_ERROR);
+    CU_ASSERT(list_remove_at(list, 1, &output) == DS_INDEX_ERROR);
 
     list_remove_back(list, &output);
     CU_ASSERT(output == 100);
 
-    CU_ASSERT(list_shift(list, &output) == LIST_EMPTY_ERROR);
-    CU_ASSERT(list_remove_back(list, &output) == LIST_EMPTY_ERROR);
-    CU_ASSERT(list_remove_at(list, 0, &output) == LIST_EMPTY_ERROR);
+    CU_ASSERT(list_shift(list, &output) == DS_EMPTY_ERROR);
+    CU_ASSERT(list_remove_back(list, &output) == DS_EMPTY_ERROR);
+    CU_ASSERT(list_remove_at(list, 0, &output) == DS_EMPTY_ERROR);
 
     list_destroy(list, NULL);
 }
@@ -70,14 +70,14 @@ void testUtils(void) {
 
     // Test for find function
     int key = 200, output;
-    CU_ASSERT(list_find(list, &key, &output, findInt) == LIST_SUCCESS_OK);
+    CU_ASSERT(list_find(list, &key, &output, findInt) == DS_SUCCESS_OK);
 
     key = 10;
-    CU_ASSERT(list_find(list, &key, &output, findInt) == LIST_ELEMENT_NOT_FOUND);
+    CU_ASSERT(list_find(list, &key, &output, findInt) == DS_ELEMENT_NOT_FOUND);
 
     // Test for set function
     int newValue = 47;
-    CU_ASSERT(list_set(list, 1, &newValue) == LIST_SUCCESS_OK);
+    CU_ASSERT(list_set(list, 1, &newValue) == DS_SUCCESS_OK);
     list_remove_at(list, 1, &output);
     CU_ASSERT(output == newValue);
 

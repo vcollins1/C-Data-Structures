@@ -54,9 +54,9 @@ Node* createListNode(void* data, size_t dataSize) {
 }
 
 // Add element to the front of list
-ListStatusCode_t list_unshift(list_t* list, void *data) {
+DS_StatusCode_t list_unshift(list_t* list, void *data) {
     Node* newNode = createListNode(data, list->dataSize);
-    if (!newNode) return LIST_MEMORY_ERROR;
+    if (!newNode) return DS_MEMORY_ERROR;
 
     if (list->size == 0) {
         list->head = list->tail = newNode;
@@ -66,12 +66,12 @@ ListStatusCode_t list_unshift(list_t* list, void *data) {
     }
 
     ++list->size;
-    return LIST_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-ListStatusCode_t list_add_back(list_t *list, void *data) {
+DS_StatusCode_t list_add_back(list_t *list, void *data) {
     Node* newNode = createListNode(data, list->dataSize);
-    if (!newNode) return LIST_MEMORY_ERROR;
+    if (!newNode) return DS_MEMORY_ERROR;
 
     if (list->size == 0) {
         list->head = list->tail = newNode;
@@ -81,11 +81,11 @@ ListStatusCode_t list_add_back(list_t *list, void *data) {
     }
 
     ++list->size;
-    return LIST_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-ListStatusCode_t list_insert_at(list_t *list, size_t index,  void *data) {
-    if (index > list->size) return LIST_INDEX_ERROR;
+DS_StatusCode_t list_insert_at(list_t *list, size_t index,  void *data) {
+    if (index > list->size) return DS_INDEX_ERROR;
 
     if (index == 0) {
         return list_unshift(list, data);
@@ -93,7 +93,7 @@ ListStatusCode_t list_insert_at(list_t *list, size_t index,  void *data) {
         return list_add_back(list, data);
     } else {
         Node* newNode = createListNode(data, list->dataSize);
-        if (!newNode) return LIST_MEMORY_ERROR;
+        if (!newNode) return DS_MEMORY_ERROR;
 
         Node* current = list->head;
         for (size_t i = 1; i < index; ++i)
@@ -104,11 +104,11 @@ ListStatusCode_t list_insert_at(list_t *list, size_t index,  void *data) {
     }
 
     ++list->size;
-    return LIST_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-ListStatusCode_t list_shift(list_t *list, void *output) {
-    if (list->size == 0) return LIST_EMPTY_ERROR;
+DS_StatusCode_t list_shift(list_t *list, void *output) {
+    if (list->size == 0) return DS_EMPTY_ERROR;
 
     Node* delete = list->head;
     memcpy(output, delete->data, list->dataSize);
@@ -122,11 +122,11 @@ ListStatusCode_t list_shift(list_t *list, void *output) {
     free(delete->data);
     free(delete);
     --list->size;
-    return LIST_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-ListStatusCode_t list_remove_back(list_t* list, void *output) {
-    if (list->size == 0) return LIST_EMPTY_ERROR;
+DS_StatusCode_t list_remove_back(list_t* list, void *output) {
+    if (list->size == 0) return DS_EMPTY_ERROR;
 
     Node* delete = list->tail;
     memcpy(output, list->tail->data, list->dataSize);
@@ -145,12 +145,12 @@ ListStatusCode_t list_remove_back(list_t* list, void *output) {
     free(delete->data);
     free(delete);
     --list->size;
-    return LIST_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
-ListStatusCode_t list_remove_at(list_t* list, size_t index, void *output) {
-    if (list->size == 0) return LIST_EMPTY_ERROR;
-    if (index >= list->size) return LIST_INDEX_ERROR;
+DS_StatusCode_t list_remove_at(list_t* list, size_t index, void *output) {
+    if (list->size == 0) return DS_EMPTY_ERROR;
+    if (index >= list->size) return DS_INDEX_ERROR;
 
     if (index == 0) {
         return list_shift(list, output);
@@ -171,7 +171,7 @@ ListStatusCode_t list_remove_at(list_t* list, size_t index, void *output) {
     }
 
     --list->size;
-    return LIST_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
 void list_clear(list_t* list, clear_callback func) {
@@ -199,32 +199,32 @@ bool is_list_empty(list_t* list) {
     return list->size == 0;
 }
 
-ListStatusCode_t list_find(list_t* list, void* key, void* found, find_callback func) {
-    if (list->size == 0 || !key) return LIST_EMPTY_ERROR;
+DS_StatusCode_t list_find(list_t* list, void* key, void* found, find_callback func) {
+    if (list->size == 0 || !key) return DS_EMPTY_ERROR;
 
     Node* current = list->head;
     while (current) {
         if (func(current->data, key)) {
             memcpy(found, current->data, list->dataSize);
-            return LIST_SUCCESS_OK;
+            return DS_SUCCESS_OK;
         }
 
         current = current->next;
     }
 
-    return LIST_ELEMENT_NOT_FOUND;
+    return DS_ELEMENT_NOT_FOUND;
 }
 
-ListStatusCode_t list_set(list_t* list, size_t index, void* update) {
-    if (list->size == 0) return LIST_EMPTY_ERROR;
-    if (index >= list->size) return LIST_INDEX_ERROR;
+DS_StatusCode_t list_set(list_t* list, size_t index, void* update) {
+    if (list->size == 0) return DS_EMPTY_ERROR;
+    if (index >= list->size) return DS_INDEX_ERROR;
 
     Node* current = list->head;
     for (size_t i = 0; i < index; ++i)
         current = current->next;
 
     memcpy(current->data, update, list->dataSize);
-    return LIST_SUCCESS_OK;
+    return DS_SUCCESS_OK;
 }
 
 listIter_t* list_create_iter(list_t* list) {
