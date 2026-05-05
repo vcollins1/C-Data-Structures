@@ -19,7 +19,7 @@ Node* node_create(void* data, size_t data_size) {
     Node* node = malloc(sizeof(Node));
     if (!node) return NULL;
 
-    node->data = malloc(sizeof(data_size));
+    node->data = malloc(data_size);
     if (!node->data) {
         free(node);
         return NULL;
