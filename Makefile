@@ -10,7 +10,7 @@ OBJ=$(patsubst src/%.c,obj/%.o, $(SRC))
 
 TARGET=main
 
-TEST=list_test vec_test stack_test
+TEST=list_test vec_test stack_test queue_test
 
 .PHONY: print all clean
 
@@ -30,6 +30,9 @@ vec_test: test/vec_test.c obj/vec.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CUNIT_CPPFLAGS) -o $@ $^ $(CUNIT_LDLIBS)
 
 stack_test: test/stack_test.c obj/stack.o
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(CUNIT_CPPFLAGS) -o $@ $^ $(CUNIT_LDLIBS)
+
+queue_test: test/queue_test.c obj/queue.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CUNIT_CPPFLAGS) -o $@ $^ $(CUNIT_LDLIBS)
 
 clean:
