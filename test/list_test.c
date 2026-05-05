@@ -8,7 +8,7 @@ bool findInt(void* a, void* key) {
 }
 
 void testInserts(void) {
-    list_t* list = list_create(sizeof(int));
+    ds_list_t* list = list_create(sizeof(int));
 
     int data = 10;
     list_insert_at(list, 0, &data);
@@ -32,7 +32,7 @@ void testInserts(void) {
 }
 
 void testRemoves(void) {
-    list_t* list = list_create(sizeof(int));
+    ds_list_t* list = list_create(sizeof(int));
     int data = 10;
     list_unshift(list, &data);
     data = 100;
@@ -60,7 +60,7 @@ void testRemoves(void) {
 }
 
 void testUtils(void) {
-    list_t* list = list_create(sizeof(int));
+    ds_list_t* list = list_create(sizeof(int));
     int data = 100;
     list_add_back(list, &data);
     data = 200;
@@ -76,10 +76,10 @@ void testUtils(void) {
     CU_ASSERT(list_find(list, &key, &output, findInt) == DS_ELEMENT_NOT_FOUND);
 
     // Test for set function
-    int newValue = 47;
-    CU_ASSERT(list_set(list, 1, &newValue) == DS_SUCCESS_OK);
+    int new_value = 47;
+    CU_ASSERT(list_set(list, 1, &new_value) == DS_SUCCESS_OK);
     list_remove_at(list, 1, &output);
-    CU_ASSERT(output == newValue);
+    CU_ASSERT(output == new_value);
 
     // Test list size
     CU_ASSERT(list_size(list) == 2);
@@ -93,20 +93,20 @@ void testUtils(void) {
 }
 
 void testIterator(void) {
-    list_t* list = list_create(sizeof(int));
+    ds_list_t* list = list_create(sizeof(int));
 
     int a = 1, b = 2, c = 3;
     list_unshift(list, &a);
     list_unshift(list, &b);
     list_unshift(list, &c);
 
-    listIter_t* iter = list_create_iter(list);
-    int data, currentValue = 0;
-    int expectedValues[] = {3, 2, 1};
+    ds_list_iter_t* iter = list_create_iter(list);
+    int data, current_value = 0;
+    int expected_values[] = {3, 2, 1};
     
     while (list_iter_has_next(iter)) {
         get_list_iter_data(iter, &data);
-        CU_ASSERT(data == expectedValues[currentValue++]);
+        CU_ASSERT(data == expected_values[current_value++]);
         list_iter_next(iter);
     }
     
@@ -118,14 +118,14 @@ int main(void) {
     if (CU_initialize_registry() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "can't initialize test registry");
 
-    CU_pSuite suiteListTest = CU_add_suite("List Test Suite", NULL, NULL);
+    CU_pSuite list_suite = CU_add_suite("List Test Suite", NULL, NULL);
     if (CU_get_error() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "%s", CU_get_error_msg());
 
-    CU_add_test(suiteListTest, "list insert tests", testInserts);
-    CU_add_test(suiteListTest, "list remove tests", testRemoves);
-    CU_add_test(suiteListTest, "List utils tests", testUtils);
-    CU_add_test(suiteListTest, "List iterator tests", testIterator);
+    CU_add_test(list_suite, "list insert tests", testInserts);
+    CU_add_test(list_suite, "list remove tests", testRemoves);
+    CU_add_test(list_suite, "List utils tests", testUtils);
+    CU_add_test(list_suite, "List iterator tests", testIterator);
 
     CU_basic_run_tests();
     CU_cleanup_registry();

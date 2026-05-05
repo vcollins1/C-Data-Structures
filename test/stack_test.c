@@ -4,7 +4,7 @@
 #include "stack.h"
 
 void test_stack_push(void) {
-    stackDS_t* stack = stack_create(sizeof(int));
+    ds_stack_t* stack = stack_create(sizeof(int));
     int a = 10, b = 20, c = 30, d = 90, e = 100, f = 110, output;
     
     stack_push(stack, &a);
@@ -37,7 +37,7 @@ void test_stack_push(void) {
 }
 
 void test_stack_pop(void) {
-    stackDS_t* stack = stack_create(sizeof(int));
+    ds_stack_t* stack = stack_create(sizeof(int));
     int a = 10, b = 20, c = 30, d = 90, e = 100, f = 110;
     
     stack_push(stack, &a);
@@ -68,12 +68,12 @@ int main(void) {
     if (CU_initialize_registry() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "can't initialize test registry");
 
-    CU_pSuite suite_stack = CU_add_suite("Vec Test Suite", NULL, NULL);
+    CU_pSuite stack_suite = CU_add_suite("Stack Test Suite", NULL, NULL);
     if (CU_get_error() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "%s", CU_get_error_msg());
 
-    CU_add_test(suite_stack, "Test for pushing to the stack", test_stack_push);
-    CU_add_test(suite_stack, "Test for popping the stack", test_stack_pop);
+    CU_add_test(stack_suite, "Test for pushing to the stack", test_stack_push);
+    CU_add_test(stack_suite, "Test for popping the stack", test_stack_pop);
     
     CU_basic_run_tests();
     CU_cleanup_registry();

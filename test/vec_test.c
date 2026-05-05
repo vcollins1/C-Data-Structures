@@ -101,7 +101,7 @@ void testVecIterator(void) {
     vec_push_back(vec, &d);
     vec_push_back(vec, &e);
 
-    vecIter_t* iter = vec_create_iter(vec);
+    ds_vec_iter_t* iter = vec_create_iter(vec);
     int expected[] = {47, 100, 101, 90, 1000};
 
     while (vec_iter_has_next(iter)) {
@@ -118,13 +118,13 @@ int main(void) {
     if (CU_initialize_registry() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "can't initialize test registry");
 
-    CU_pSuite suiteVecTest = CU_add_suite("Vec Test Suite", NULL, NULL);
+    CU_pSuite vec_queue = CU_add_suite("Vec Test Suite", NULL, NULL);
     if (CU_get_error() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "%s", CU_get_error_msg());
 
-    CU_add_test(suiteVecTest, "Test for adding elements to a vec type", testVecElementAdd);
-    CU_add_test(suiteVecTest, "Test for removing elements to a vec type", testVecElementRemove);
-    CU_add_test(suiteVecTest, "Test Vec iterator", testVecIterator);
+    CU_add_test(vec_queue, "Test for adding elements to a vec type", testVecElementAdd);
+    CU_add_test(vec_queue, "Test for removing elements to a vec type", testVecElementRemove);
+    CU_add_test(vec_queue, "Test Vec iterator", testVecIterator);
     
     CU_basic_run_tests();
     CU_cleanup_registry();

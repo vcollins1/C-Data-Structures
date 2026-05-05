@@ -8,14 +8,14 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-struct QueueDS {
+struct Queue {
     size_t size;
     size_t data_size;
     Node* head;
     Node* tail;
 };
 
-Node* node_create(void* data, size_t data_size) {
+Node* queue_node_create(void* data, size_t data_size) {
     Node* node = malloc(sizeof(Node));
     if (!node) return NULL;
 
@@ -31,8 +31,8 @@ Node* node_create(void* data, size_t data_size) {
     return node;
 }
 
-queueDS_t* queue_create(size_t data_size) {
-    queueDS_t* queue = malloc(sizeof(queueDS_t));
+ds_queue_t* queue_create(size_t data_size) {
+    ds_queue_t* queue = malloc(sizeof(ds_queue_t));
     if (!queue) return NULL;
     queue->head = queue->tail = NULL;
     queue->size = 0;
@@ -41,7 +41,7 @@ queueDS_t* queue_create(size_t data_size) {
     return queue;
 }
 
-void queue_destroy(queueDS_t* queue, clear_callback func) {
+void queue_destroy(ds_queue_t* queue, clear_callback func) {
     Node* current = queue->head;
     while (current) {
         Node* delete = current;
@@ -57,8 +57,8 @@ void queue_destroy(queueDS_t* queue, clear_callback func) {
     free(queue);
 }
 
-DS_StatusCode_t queue_enqueue(queueDS_t* queue, void* data) {
-    Node* node = node_create(data, queue->data_size);
+ds_status_code_t queue_enqueue(ds_queue_t* queue, void* data) {
+    Node* node = queue_node_create(data, queue->data_size);
     if (!node)
         return DS_MEMORY_ERROR;
 
@@ -74,7 +74,7 @@ DS_StatusCode_t queue_enqueue(queueDS_t* queue, void* data) {
     return DS_SUCCESS_OK;
 }
 
-DS_StatusCode_t queue_dequeue(queueDS_t* queue, void* output, clear_callback func) {
+ds_status_code_t queue_dequeue(ds_queue_t* queue, void* output, clear_callback func) {
     if (queue->size == 0) return DS_EMPTY_ERROR;
 
     Node* delete_node = queue->head;
@@ -98,10 +98,10 @@ DS_StatusCode_t queue_dequeue(queueDS_t* queue, void* output, clear_callback fun
     return DS_SUCCESS_OK;
 }
 
-size_t queue_size(queueDS_t* queue) {
+size_t queue_size(ds_queue_t* queue) {
     return queue->size;
 }
 
-bool queue_empty(queueDS_t* queue) {
+bool queue_empty(ds_queue_t* queue) {
     return queue->size == 0;
 }

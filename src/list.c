@@ -20,8 +20,8 @@ struct ListIter {
     Node* current;
 };
 
-list_t* list_create(size_t data_size) {
-    list_t* list = malloc(sizeof(list_t));
+ds_list_t* list_create(size_t data_size) {
+    ds_list_t* list = malloc(sizeof(ds_list_t));
     if (!list) return NULL;
 
     list->size = 0;
@@ -31,60 +31,60 @@ list_t* list_create(size_t data_size) {
     return list;
 }
 
-void list_destroy(list_t *list, clear_callback func) {
+void list_destroy(ds_list_t *list, clear_callback func) {
     list_clear(list, func);
     free(list->head);
     free(list->tail);
     free(list);
 }
 
-Node* createListNode(void* data, size_t data_size) {
-    Node* newNode = malloc(sizeof(Node));
-    if (!newNode) return NULL;
-    newNode->next = NULL;
+Node* list_node_create(void* data, size_t data_size) {
+    Node* new_node = malloc(sizeof(Node));
+    if (!new_node) return NULL;
+    new_node->next = NULL;
     
-    newNode->data = malloc(data_size);
-    if (!newNode->data) {
-        free(newNode);
+    new_node->data = malloc(data_size);
+    if (!new_node->data) {
+        free(new_node);
         return NULL;
     }
 
-    memcpy(newNode->data, data, data_size);
-    return newNode;
+    memcpy(new_node->data, data, data_size);
+    return new_node;
 }
 
 // Add element to the front of list
-DS_StatusCode_t list_unshift(list_t* list, void *data) {
-    Node* newNode = createListNode(data, list->data_size);
-    if (!newNode) return DS_MEMORY_ERROR;
+ds_status_code_t list_unshift(ds_list_t* list, void *data) {
+    Node* new_node = list_node_create(data, list->data_size);
+    if (!new_node) return DS_MEMORY_ERROR;
 
     if (list->size == 0) {
-        list->head = list->tail = newNode;
+        list->head = list->tail = new_node;
     } else {
-        newNode->next = list->head;
-        list->head = newNode;
+        new_node->next = list->head;
+        list->head = new_node;
     }
 
     ++list->size;
     return DS_SUCCESS_OK;
 }
 
-DS_StatusCode_t list_add_back(list_t *list, void *data) {
-    Node* newNode = createListNode(data, list->data_size);
-    if (!newNode) return DS_MEMORY_ERROR;
+ds_status_code_t list_add_back(ds_list_t *list, void *data) {
+    Node* new_node = list_node_create(data, list->data_size);
+    if (!new_node) return DS_MEMORY_ERROR;
 
     if (list->size == 0) {
-        list->head = list->tail = newNode;
+        list->head = list->tail = new_node;
     } else {
-        list->tail->next = newNode;
-        list->tail = newNode;
+        list->tail->next = new_node;
+        list->tail = new_node;
     }
 
     ++list->size;
     return DS_SUCCESS_OK;
 }
 
-DS_StatusCode_t list_insert_at(list_t *list, size_t index,  void *data) {
+ds_status_code_t list_insert_at(ds_list_t *list, size_t index,  void *data) {
     if (index > list->size) return DS_INDEX_ERROR;
 
     if (index == 0) {
@@ -92,22 +92,22 @@ DS_StatusCode_t list_insert_at(list_t *list, size_t index,  void *data) {
     } else if (index == list->size) {
         return list_add_back(list, data);
     } else {
-        Node* newNode = createListNode(data, list->data_size);
-        if (!newNode) return DS_MEMORY_ERROR;
+        Node* new_node = list_node_create(data, list->data_size);
+        if (!new_node) return DS_MEMORY_ERROR;
 
         Node* current = list->head;
         for (size_t i = 1; i < index; ++i)
             current = current->next;
 
-        newNode->next = current->next;
-        current->next = newNode;
+        new_node->next = current->next;
+        current->next = new_node;
     }
 
     ++list->size;
     return DS_SUCCESS_OK;
 }
 
-DS_StatusCode_t list_shift(list_t *list, void *output) {
+ds_status_code_t list_shift(ds_list_t *list, void *output) {
     if (list->size == 0) return DS_EMPTY_ERROR;
 
     Node* delete = list->head;
@@ -125,7 +125,7 @@ DS_StatusCode_t list_shift(list_t *list, void *output) {
     return DS_SUCCESS_OK;
 }
 
-DS_StatusCode_t list_remove_back(list_t* list, void *output) {
+ds_status_code_t list_remove_back(ds_list_t* list, void *output) {
     if (list->size == 0) return DS_EMPTY_ERROR;
 
     Node* delete = list->tail;
@@ -148,7 +148,7 @@ DS_StatusCode_t list_remove_back(list_t* list, void *output) {
     return DS_SUCCESS_OK;
 }
 
-DS_StatusCode_t list_remove_at(list_t* list, size_t index, void *output) {
+ds_status_code_t list_remove_at(ds_list_t* list, size_t index, void *output) {
     if (list->size == 0) return DS_EMPTY_ERROR;
     if (index >= list->size) return DS_INDEX_ERROR;
 
@@ -174,7 +174,7 @@ DS_StatusCode_t list_remove_at(list_t* list, size_t index, void *output) {
     return DS_SUCCESS_OK;
 }
 
-void list_clear(list_t* list, clear_callback func) {
+void list_clear(ds_list_t* list, clear_callback func) {
     while (list->head) {
         Node* current = list->head;
         list->head = list->head->next;
@@ -190,16 +190,16 @@ void list_clear(list_t* list, clear_callback func) {
     list->head = list->tail = NULL;
 }
 
-size_t list_size(list_t* list)
+size_t list_size(ds_list_t* list)
 {
     return list->size;
 }
 
-bool is_list_empty(list_t* list) {
+bool is_list_empty(ds_list_t* list) {
     return list->size == 0;
 }
 
-DS_StatusCode_t list_find(list_t* list, void* key, void* found, find_callback func) {
+ds_status_code_t list_find(ds_list_t* list, void* key, void* found, find_callback func) {
     if (list->size == 0 || !key) return DS_EMPTY_ERROR;
 
     Node* current = list->head;
@@ -215,7 +215,7 @@ DS_StatusCode_t list_find(list_t* list, void* key, void* found, find_callback fu
     return DS_ELEMENT_NOT_FOUND;
 }
 
-DS_StatusCode_t list_set(list_t* list, size_t index, void* update) {
+ds_status_code_t list_set(ds_list_t* list, size_t index, void* update) {
     if (list->size == 0) return DS_EMPTY_ERROR;
     if (index >= list->size) return DS_INDEX_ERROR;
 
@@ -227,34 +227,34 @@ DS_StatusCode_t list_set(list_t* list, size_t index, void* update) {
     return DS_SUCCESS_OK;
 }
 
-listIter_t* list_create_iter(list_t* list) {
-    listIter_t* iter = malloc(sizeof(listIter_t));
+ds_list_iter_t* list_create_iter(ds_list_t* list) {
+    ds_list_iter_t* iter = malloc(sizeof(ds_list_iter_t));
     iter->current = list->head;
     iter->data_size = list->data_size;
     return iter;
 }
 
-void list_destroy_iter(listIter_t *iter) {
+void list_destroy_iter(ds_list_iter_t *iter) {
     free(iter);
 }
 
-void list_iter_next(listIter_t* iter) {
+void list_iter_next(ds_list_iter_t* iter) {
     if (iter->current) {
         iter->current = iter->current->next;
     }
 }
 
-void get_list_iter_data(listIter_t *iter, void *output) {
+void get_list_iter_data(ds_list_iter_t *iter, void *output) {
     if (iter->current) {
         memcpy(output, iter->current->data, iter->data_size);
     }
 }
 
-bool list_iter_has_next(listIter_t* iter) {
+bool list_iter_has_next(ds_list_iter_t* iter) {
     return iter->current != NULL;;
 }
 
-void list_print(list_t* list, print_callback func) {
+void list_print(ds_list_t* list, print_callback func) {
     Node* current = list->head;
 
     char* sep = "";

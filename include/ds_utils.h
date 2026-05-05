@@ -9,7 +9,7 @@ typedef enum {
     DS_INDEX_ERROR,
     DS_EMPTY_ERROR,
     DS_ELEMENT_NOT_FOUND,
-} DS_StatusCode_t;
+} ds_status_code_t;
 
 // Data structure callback functions
 typedef void (*print_callback)(const void* data);

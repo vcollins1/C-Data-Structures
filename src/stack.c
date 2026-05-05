@@ -2,14 +2,14 @@
 #include <string.h>
 #include "stack.h"
 
-struct StackDS {
+struct Stack {
    size_t size;
    size_t capacity;
    size_t data_size;
    void** data; 
 };
 
-DS_StatusCode_t stack_resize(stackDS_t* stack, size_t capacity) {
+ds_status_code_t stack_resize(ds_stack_t* stack, size_t capacity) {
    if (stack->size == 0) capacity = 1;
 
    void** new_data = malloc(capacity * sizeof(*stack->data));
@@ -22,8 +22,8 @@ DS_StatusCode_t stack_resize(stackDS_t* stack, size_t capacity) {
    return DS_SUCCESS_OK;
 }
 
-stackDS_t* stack_create(size_t data_size) {
-   stackDS_t* stack = malloc(sizeof(stackDS_t));
+ds_stack_t* stack_create(size_t data_size) {
+   ds_stack_t* stack = malloc(sizeof(ds_stack_t));
    if (!stack) return NULL;
 
    stack->data = malloc(sizeof(*stack->data));
@@ -39,7 +39,7 @@ stackDS_t* stack_create(size_t data_size) {
    return stack;
 }
 
-void stack_destroy(stackDS_t* stack, clear_callback func) {
+void stack_destroy(ds_stack_t* stack, clear_callback func) {
    while (stack->size > 0) {
       if (func != NULL)
          func(stack->data[stack->size - 1]);
@@ -51,7 +51,7 @@ void stack_destroy(stackDS_t* stack, clear_callback func) {
    free(stack);
 }
 
-DS_StatusCode_t stack_push(stackDS_t* stack, void* data) {
+ds_status_code_t stack_push(ds_stack_t* stack, void* data) {
    if (stack->capacity == stack->size && stack_resize(stack, stack->capacity * 2) != DS_SUCCESS_OK)
       return DS_MEMORY_ERROR;
 
@@ -63,7 +63,7 @@ DS_StatusCode_t stack_push(stackDS_t* stack, void* data) {
    return DS_SUCCESS_OK;
 }
 
-DS_StatusCode_t stack_pop(stackDS_t* stack) {
+ds_status_code_t stack_pop(ds_stack_t* stack) {
    if (stack->size == 0) return DS_EMPTY_ERROR;
 
    free(stack->data[--stack->size]);
@@ -74,7 +74,7 @@ DS_StatusCode_t stack_pop(stackDS_t* stack) {
    return DS_SUCCESS_OK;
 }
 
-DS_StatusCode_t stack_top(stackDS_t* stack, void* output) {
+ds_status_code_t stack_top(ds_stack_t* stack, void* output) {
    if (stack->size == 0) return DS_EMPTY_ERROR;
 
    memcpy(output, stack->data[stack->size - 1], stack->data_size);
@@ -82,10 +82,10 @@ DS_StatusCode_t stack_top(stackDS_t* stack, void* output) {
    return DS_SUCCESS_OK;
 }
 
-size_t stack_size(stackDS_t* stack) {
+size_t stack_size(ds_stack_t* stack) {
    return stack->size;
 }
 
-bool stack_empty(stackDS_t* stack) {
+bool stack_empty(ds_stack_t* stack) {
    return stack->size == 0;
 }
