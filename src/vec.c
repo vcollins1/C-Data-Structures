@@ -55,7 +55,9 @@ void vec_destroy(vec_t* vec, clear_callback func) {
 
 DS_StatusCode_t vec_push_back(vec_t* vec, void* data) {
     if (vec->size == vec->capacity) {
-        resizeCapacity(vec, 2 * vec->capacity);
+        DS_StatusCode_t status = resizeCapacity(vec, 2 * vec->capacity);
+        if(status != DS_SUCCESS_OK)
+            return status;
     }
 
     vec->data_array[vec->size] = malloc(vec->data_size);
