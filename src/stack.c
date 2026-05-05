@@ -42,7 +42,7 @@ stackDS_t* stack_create(size_t data_size) {
 void stack_destroy(stackDS_t* stack, clear_callback func) {
    while (stack->size > 0) {
       if (func != NULL)
-         func(stack->data);
+         func(stack->data[stack->size - 1]);
 
       free(stack->data[--stack->size]);
    }
