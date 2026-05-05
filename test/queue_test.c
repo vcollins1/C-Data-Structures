@@ -27,13 +27,16 @@ void test_dequeue(void) {
     queue_enqueue(queue, &b);
     queue_enqueue(queue, &c);
 
-    queue_dequeue(queue, &output, NULL);
+    queue_front(queue, &output);
+    queue_dequeue(queue, NULL);
     CU_ASSERT(output == 10);
 
-    queue_dequeue(queue, &output, NULL);
+    queue_front(queue, &output);
+    queue_dequeue(queue, NULL);
     CU_ASSERT(output == 20);
 
-    queue_dequeue(queue, &output, NULL);
+    queue_front(queue, &output);
+    queue_dequeue(queue, NULL);
     CU_ASSERT(output == 30);
 
     CU_ASSERT(queue_empty(queue));

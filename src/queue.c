@@ -74,7 +74,7 @@ ds_status_code_t queue_enqueue(ds_queue_t* queue, void* data) {
     return DS_SUCCESS_OK;
 }
 
-ds_status_code_t queue_dequeue(ds_queue_t* queue, void* output, clear_callback func) {
+ds_status_code_t queue_dequeue(ds_queue_t* queue, clear_callback func) {
     if (queue->size == 0) return DS_EMPTY_ERROR;
 
     Node* delete_node = queue->head;
@@ -86,8 +86,6 @@ ds_status_code_t queue_dequeue(ds_queue_t* queue, void* output, clear_callback f
         queue->head->previous = NULL;
     }
 
-    memcpy(output, delete_node->data, queue->data_size);
-
     delete_node->next = NULL;
     if (func)
         func(delete_node->data);
@@ -98,7 +96,15 @@ ds_status_code_t queue_dequeue(ds_queue_t* queue, void* output, clear_callback f
     return DS_SUCCESS_OK;
 }
 
-size_t queue_size(ds_queue_t* queue) {
+ds_status_code_t queue_front(ds_queue_t* queue, void *output) {
+    if (queue->size == 0) return DS_EMPTY_ERROR;
+    memcpy(output, queue->head->data, queue->data_size);
+
+    return DS_SUCCESS_OK;
+}
+
+size_t queue_size(ds_queue_t *queue)
+{
     return queue->size;
 }
 
