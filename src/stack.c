@@ -66,10 +66,10 @@ ds_status_code_t stack_push(ds_stack_t* stack, void* data) {
 ds_status_code_t stack_pop(ds_stack_t* stack) {
    if (stack->size == 0) return DS_EMPTY_ERROR;
 
-   free(stack->data[--stack->size]);
-
-   if (stack->capacity / 4 == stack->size && stack_resize(stack, stack->capacity / 2) != DS_SUCCESS_OK)
+   if (stack->capacity / 4 == stack->size - 1 && stack_resize(stack, stack->capacity / 2) != DS_SUCCESS_OK)
       return DS_MEMORY_ERROR;
+
+   free(stack->data[--stack->size]);
    
    return DS_SUCCESS_OK;
 }

@@ -96,15 +96,14 @@ ds_status_code_t vec_insert(vec_t* vec, size_t index, void* data) {
 ds_status_code_t vec_pop_back(vec_t* vec, void *output) {
     if (vec->size == 0) return DS_EMPTY_ERROR;
 
-    --vec->size;
-    memcpy(output, vec->data_array[vec->size], vec->data_size);
-    free(vec->data_array[vec->size]);
-
-    if (vec->size == vec->capacity/4) {
+    if (vec->size - 1 == vec->capacity/4) {
         ds_status_code_t status = vec_resize_capacity(vec, vec->capacity/2);
         if(status != DS_SUCCESS_OK)
             return status;
     }
+
+    memcpy(output, vec->data_array[vec->size - 1], vec->data_size);
+    free(vec->data_array[--vec->size]);
 
     return DS_SUCCESS_OK;
 }
@@ -147,6 +146,7 @@ ds_status_code_t vec_at(vec_t* vec, size_t index, void* output) {
 }
 
 ds_vec_iter_t* vec_create_iter(vec_t* vec) {
+    if (vec->size == 0) return NULL;
     ds_vec_iter_t* iter = malloc(sizeof(ds_vec_iter_t));
     if (!iter) return NULL;
 

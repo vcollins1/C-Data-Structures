@@ -1,6 +1,8 @@
 #ifndef DS_STATUS_CODE_H
 #define DS_STATUS_CODE_H
 
+#include <stdbool.h>
+
 // Data structure status codes
 typedef enum {
     DS_SUCCESS_OK = 0,
