@@ -50,7 +50,7 @@ int main(void) {
     if (CU_get_error() != CUE_SUCCESS)
         errx(EXIT_FAILURE, "%s", CU_get_error_msg());
 
-    // CU_add_test(suite_queue, "Test for enqueue", test_enqueue);
+    CU_add_test(suite_queue, "Test for enqueue", test_enqueue);
     CU_add_test(suite_queue, "Test for dequeue", test_dequeue);
     
     CU_basic_run_tests();
