@@ -1,0 +1,23 @@
+default:
+  image: gcc
+  before_script:
+    - apt-get update --yes
+    - apt-get install --yes cmake
+
+stages:
+  - build
+  - test
+
+library_build:
+  stage: build
+  script:
+    - cmake -S . -B build
+    - cmake --build build
+  artifacts:
+    paths:
+      - build/
+
+ds_library_test:
+  stage: test
+  script:
+    - ctest --test-dir build --output-on-failure -j6
