@@ -93,14 +93,14 @@ ds_status_code_t vector_insert(ds_vector_t* vector, size_t index, void* data) {
 ds_status_code_t vector_pop_back(ds_vector_t* vector, clear_callback func) {
     if (vector->size == 0) return DS_EMPTY_ERROR;
 
-    if ((vector->capacity > 1) && vector->size - 1 == vector->capacity/4) {
+    if (func) func(vector->data_array[vector->size - 1]);
+    free(vector->data_array[--vector->size]);
+
+    if ((vector->capacity > 1) && vector->size == vector->capacity/4) {
         ds_status_code_t status = vector_resize_capacity(vector, vector->capacity/2);
         if(status != DS_SUCCESS_OK)
             return status;
     }
-
-    if (func) func(vector->data_array[vector->size - 1]);
-    free(vector->data_array[--vector->size]);
 
     return DS_SUCCESS_OK;
 }
