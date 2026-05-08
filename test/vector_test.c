@@ -133,7 +133,9 @@ int main(void) {
     CU_add_test(vec_queue, "Test for removing elements to a vec type", testVecElementRemove);
     CU_add_test(vec_queue, "Test Vector iterator", testVecIterator);
     
+    CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
+    unsigned int failed = CU_get_number_of_tests_failed();
     CU_cleanup_registry();
-    return 0;
+    return (failed > 0) ? 1 : 0;
 }

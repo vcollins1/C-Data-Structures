@@ -29,4 +29,7 @@ foreach(TEST ${TEST_TARGETS})
             ${CUNIT_LIBRARY}
             data_structures
     )
+    add_test(NAME ${TEST} COMMAND ${TEST})
 endforeach()
+
+enable_testing()

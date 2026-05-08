@@ -56,7 +56,9 @@ int main(void) {
     CU_add_test(queue_suite, "Test for enqueue", test_enqueue);
     CU_add_test(queue_suite, "Test for dequeue", test_dequeue);
     
+    CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
+    unsigned int failed = CU_get_number_of_tests_failed();
     CU_cleanup_registry();
-    return 0;
+    return (failed > 0) ? 1 : 0;
 }

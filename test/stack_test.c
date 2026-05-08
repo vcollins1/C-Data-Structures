@@ -78,7 +78,9 @@ int main(void) {
     CU_add_test(stack_suite, "Test for pushing to the stack", test_stack_push);
     CU_add_test(stack_suite, "Test for popping the stack", test_stack_pop);
     
+    CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
+    unsigned int failed = CU_get_number_of_tests_failed();
     CU_cleanup_registry();
-    return 0;
+    return (failed > 0) ? 1 : 0;
 }
