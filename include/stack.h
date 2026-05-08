@@ -11,7 +11,7 @@ typedef ds_vector_t ds_stack_t;
 ds_stack_t* stack_create(size_t data_size);
 void stack_destroy(ds_stack_t* stack, clear_callback func);
 
-// add data to trhe stack
+// add data to the stack
 ds_status_code_t stack_push(ds_stack_t* stack, void* data);
 
 // remove data from the stack

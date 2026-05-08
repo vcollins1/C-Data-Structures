@@ -1,2 +1,2 @@
 # C Data Structures
-Data structure implimentation using c programming language
+Data structure implementation using the C programming language.
