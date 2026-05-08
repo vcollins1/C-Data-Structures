@@ -17,7 +17,7 @@ struct VectorIter {
     void** data;
 };
 
-ds_status_code_t vector_resize_capacity(ds_vector_t* vector, size_t capacity) {
+static ds_status_code_t vector_resize_capacity(ds_vector_t* vector, size_t capacity) {
     if (vector->size == 0) capacity = 1;
 
     void** new_data_array = malloc(sizeof(*vector->data_array) * capacity);

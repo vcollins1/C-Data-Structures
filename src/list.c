@@ -39,7 +39,7 @@ void list_destroy(ds_list_t *list, clear_callback func) {
     free(list);
 }
 
-Node* list_node_create(void* data, size_t data_size) {
+static Node* list_node_create(void* data, size_t data_size) {
     Node* new_node = malloc(sizeof(Node));
     if (!new_node) return NULL;
     new_node->next = NULL;
