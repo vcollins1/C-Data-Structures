@@ -10,7 +10,8 @@ OBJ=$(patsubst src/%.c,obj/%.o, $(SRC))
 
 TARGET=main
 
-TEST=list_test vec_test stack_test queue_test
+TEST_SRC=$(wildcard test/*.c)
+TEST=$(patsubst test/%.c,%, $(TEST_SRC))
 
 .PHONY: print all clean
 
@@ -26,18 +27,14 @@ main: main.c $(OBJ)
 list_test: test/list_test.c obj/list.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CUNIT_CPPFLAGS) -o $@ $^ $(CUNIT_LDLIBS)
 
-vec_test: test/vec_test.c obj/vec.o
+vector_test: test/vector_test.c obj/vector.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CUNIT_CPPFLAGS) -o $@ $^ $(CUNIT_LDLIBS)
 
-stack_test: test/stack_test.c obj/stack.o
+stack_test: test/stack_test.c $(OBJ) 
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CUNIT_CPPFLAGS) -o $@ $^ $(CUNIT_LDLIBS)
 
-queue_test: test/queue_test.c obj/queue.o
+queue_test: test/queue_test.c $(OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(CUNIT_CPPFLAGS) -o $@ $^ $(CUNIT_LDLIBS)
 
 clean:
 	rm -rf $(TARGET) $(TEST) $(OBJ) *.dSYM
-
-print:
-	@echo $(SRC)
-	@echo $(OBJ)

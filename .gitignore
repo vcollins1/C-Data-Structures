@@ -5,6 +5,6 @@
 
 main
 list_test
-vec_test
+vector_test
 stack_test
 queue_test

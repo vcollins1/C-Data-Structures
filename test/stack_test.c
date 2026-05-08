@@ -11,6 +11,9 @@ void test_stack_push(void) {
     stack_top(stack, &output);
     CU_ASSERT(output == 10);
 
+    stack_pop(stack, NULL);
+
+    stack_push(stack, &a);
     stack_push(stack, &b);
     stack_top(stack, &output);
     CU_ASSERT(output == 20);
@@ -47,17 +50,17 @@ void test_stack_pop(void) {
     stack_push(stack, &e);
     stack_push(stack, &f);
 
-    stack_pop(stack);
+    stack_pop(stack, NULL);
     CU_ASSERT(stack_size(stack) == 5);
-    stack_pop(stack);
+    stack_pop(stack, NULL);
     CU_ASSERT(stack_size(stack) == 4);
-    stack_pop(stack);
+    stack_pop(stack, NULL);
     CU_ASSERT(stack_size(stack) == 3);
-    stack_pop(stack);
+    stack_pop(stack, NULL);
     CU_ASSERT(stack_size(stack) == 2);
-    stack_pop(stack);
+    stack_pop(stack, NULL);
     CU_ASSERT(stack_size(stack) == 1);
-    stack_pop(stack);
+    stack_pop(stack, NULL);
     CU_ASSERT(stack_empty(stack));
 
     stack_destroy(stack, NULL);

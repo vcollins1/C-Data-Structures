@@ -4,8 +4,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "ds_utils.h"
+#include "list.h"
 
-typedef struct Queue ds_queue_t;
+typedef ds_list_t ds_queue_t;
 
 ds_queue_t* queue_create(size_t data_size);
 void queue_destroy(ds_queue_t* queue, clear_callback func);

@@ -1,6 +1,7 @@
 #include <CUnit/Basic.h>
 #include <err.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "list.h"
 
 bool findInt(void* a, void* key) {
@@ -14,6 +15,7 @@ void testInserts(void) {
     list_insert_at(list, 0, &data);
     CU_ASSERT(list_size(list) == 1);
 
+    data = 15;
     list_unshift(list, &data);
     CU_ASSERT(list_size(list) == 2);
 
@@ -33,28 +35,30 @@ void testInserts(void) {
 
 void testRemoves(void) {
     ds_list_t* list = list_create(sizeof(int));
-    int data = 10;
+    int data = 10, output;
     list_unshift(list, &data);
     data = 100;
     list_add_back(list, &data);
     data = 25;
     list_insert_at(list, 1, &data);
 
-    int output;
-    list_remove_at(list, 1, &output);
+    list_at(list, 1, &output);
+    list_remove_at(list, 1, NULL);
     CU_ASSERT(output == 25);
 
-    list_shift(list, &output);
+    list_front(list, &output);
+    list_shift(list, NULL);
     CU_ASSERT(output == 10);
 
-    CU_ASSERT(list_remove_at(list, 1, &output) == DS_INDEX_ERROR);
+    CU_ASSERT(list_remove_at(list, 1, NULL) == DS_INDEX_ERROR);
 
-    list_remove_back(list, &output);
+    list_back(list, &output);
+    list_remove_back(list, NULL);
     CU_ASSERT(output == 100);
 
-    CU_ASSERT(list_shift(list, &output) == DS_EMPTY_ERROR);
-    CU_ASSERT(list_remove_back(list, &output) == DS_EMPTY_ERROR);
-    CU_ASSERT(list_remove_at(list, 0, &output) == DS_EMPTY_ERROR);
+    CU_ASSERT(list_shift(list, NULL) == DS_EMPTY_ERROR);
+    CU_ASSERT(list_remove_back(list, NULL) == DS_EMPTY_ERROR);
+    CU_ASSERT(list_remove_at(list, 0, NULL) == DS_EMPTY_ERROR);
 
     list_destroy(list, NULL);
 }
@@ -78,7 +82,8 @@ void testUtils(void) {
     // Test for set function
     int new_value = 47;
     CU_ASSERT(list_set(list, 1, &new_value) == DS_SUCCESS_OK);
-    list_remove_at(list, 1, &output);
+    list_at(list, 1, &output);
+    list_remove_at(list, 1, NULL);
     CU_ASSERT(output == new_value);
 
     // Test list size
@@ -86,7 +91,7 @@ void testUtils(void) {
 
     // Test clear list
     list_clear(list, NULL);
-    CU_ASSERT(is_list_empty(list) == true);
+    CU_ASSERT(list_empty(list) == true);
     CU_ASSERT(list_size(list) == 0);
 
     list_destroy(list, NULL);

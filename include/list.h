@@ -13,20 +13,37 @@ typedef struct ListIter ds_list_iter_t;
 ds_list_t* list_create(size_t data_size);
 void list_destroy(ds_list_t* list, clear_callback func);
 
-// Add elements to list
+// Add element to front of list
 ds_status_code_t list_unshift(ds_list_t* list, void* data);
+
+// Add element to back of list
 ds_status_code_t list_add_back(ds_list_t* list, void* data);
+
+// Add element at given index in the list
 ds_status_code_t list_insert_at(ds_list_t* list, size_t index, void* data);
 
-// Remove elements from the list
-ds_status_code_t list_shift(ds_list_t* list, void* output);
-ds_status_code_t list_remove_back(ds_list_t* list, void* output);
-ds_status_code_t list_remove_at(ds_list_t* list, size_t index, void* output);
+// Remove element from front the list
+ds_status_code_t list_shift(ds_list_t* list, clear_callback func);
+
+// Remove element from back the list
+ds_status_code_t list_remove_back(ds_list_t* list, clear_callback func);
+
+// Remove element at given index in the list
+ds_status_code_t list_remove_at(ds_list_t* list, size_t index, clear_callback func);
+
+// view of data at the front of list
+ds_status_code_t list_front(ds_list_t* list, void* output);
+
+// view of data at the back of list
+ds_status_code_t list_back(ds_list_t* list, void* output);
+
+// view of data at a given index
+ds_status_code_t list_at(ds_list_t* list, size_t index, void* output);
 
 // Utility functions
 void list_clear(ds_list_t* list, clear_callback func);
 size_t list_size(ds_list_t* list);
-bool is_list_empty(ds_list_t* list);
+bool list_empty(ds_list_t* list);
 ds_status_code_t list_find(ds_list_t* list, void* key, void* found, find_callback func);
 ds_status_code_t list_set(ds_list_t* list, size_t index, void* update);
 
