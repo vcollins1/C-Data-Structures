@@ -1,10 +1,3 @@
 /.vscode
-/obj
-*.dSYM
+/build
 **/.DS_Store
-
-main
-list_test
-vector_test
-stack_test
-queue_test
