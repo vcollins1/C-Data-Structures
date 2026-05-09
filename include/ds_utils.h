@@ -10,6 +10,7 @@ typedef enum {
     DS_MEMORY_ERROR,
     DS_INDEX_ERROR,
     DS_EMPTY_ERROR,
+    DS_NULL_ERROR,
     DS_ELEMENT_NOT_FOUND,
 } ds_status_code_t;
 
