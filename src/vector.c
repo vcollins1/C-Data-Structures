@@ -159,7 +159,7 @@ ds_status_code_t vector_at(ds_vector_t* vector, size_t index, void* output) {
 }
 
 ds_vector_iter_t* vector_create_iter(ds_vector_t* vector) {
-    if (!vector) return DS_NULL_ERROR;
+    if (!vector) return NULL;
     if (vector->size == 0) return NULL;
     ds_vector_iter_t* iter = malloc(sizeof(ds_vector_iter_t));
     if (!iter) return NULL;
@@ -179,19 +179,23 @@ ds_vector_iter_t* vector_create_iter(ds_vector_t* vector) {
 }
 
 void vector_destroy_iter(ds_vector_iter_t* iter) {
+    if (!iter) return;
     free(iter->data);
     free(iter);
 }
 
 void vector_iter_next(ds_vector_iter_t* iter) {
+    if (!iter) return;
     iter->current++;
 }
 
 void get_vector_iter_data(ds_vector_iter_t* iter, void *output) {
+    if (!iter || !output) return;
     memcpy(output, iter->data[iter->current], iter->data_size);
 }
 
 bool vector_iter_has_next(ds_vector_iter_t* iter) {
+    if (!iter) return false;
     return iter->current < iter->last;
 }
 

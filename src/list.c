@@ -272,30 +272,35 @@ ds_status_code_t list_set(ds_list_t* list, size_t index, void* update) {
 }
 
 ds_list_iter_t* list_create_iter(ds_list_t* list) {
-    if (!list) return DS_NULL_ERROR;
+    if (!list) return NULL;
     ds_list_iter_t* iter = malloc(sizeof(ds_list_iter_t));
+    if (!iter) return NULL;
     iter->current = list->head;
     iter->data_size = list->data_size;
     return iter;
 }
 
-void list_destroy_iter(ds_list_iter_t *iter) {
+void list_destroy_iter(ds_list_iter_t* iter) {
+    if (!iter) return;
     free(iter);
 }
 
 void list_iter_next(ds_list_iter_t* iter) {
+    if (!iter) return;
     if (iter->current) {
         iter->current = iter->current->next;
     }
 }
 
 void get_list_iter_data(ds_list_iter_t* iter, void* output) {
+    if (!iter || !output) return;
     if (iter->current) {
         memcpy(output, iter->current->data, iter->data_size);
     }
 }
 
 bool list_iter_has_next(ds_list_iter_t* iter) {
+    if (!iter) return false;
     return iter->current != NULL;;
 }
 
