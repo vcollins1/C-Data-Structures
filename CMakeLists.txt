@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(CDataStructures LANGUAGES C)
 
 set(CFLAGS -g -Wall -Wextra -Wpedantic -Werror)
-set(TEST_TARGETS list_test vector_test stack_test queue_test)
+set(TEST_TARGETS list_test vector_test stack_test queue_test deque_test)
 
 add_library(data_structures
     src/list.c
