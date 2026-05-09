@@ -13,7 +13,7 @@ void test_deque_inserts(void) {
 
     input = 100;
     deque_push_back(deque, &input);
-    CU_ASSERT(deque_size(deque) == 1);
+    CU_ASSERT(deque_size(deque) == 2);
 
     deque_front(deque, &output);
     CU_ASSERT(output == 47);
