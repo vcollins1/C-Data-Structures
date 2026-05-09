@@ -9,6 +9,7 @@ add_library(data_structures
     src/vector.c
     src/stack.c
     src/queue.c
+    src/deque.c
 )
 target_compile_features(data_structures PRIVATE c_std_17)
 target_compile_options(data_structures PRIVATE ${CFLAGS})
