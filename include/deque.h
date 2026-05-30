@@ -1,5 +1,5 @@
-#ifndef DEQUE_H
-#define DEQUE_H
+#ifndef CDATASTRUCTURES_DEQUE_H
+#define CDATASTRUCTURES_DEQUE_H
 
 #include <stdbool.h>
 #include <stddef.h>

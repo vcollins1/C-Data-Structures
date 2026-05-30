@@ -1,5 +1,5 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef CDATASTRUCTURES_QUEUE_H
+#define CDATASTRUCTURES_QUEUE_H
 
 #include <stdbool.h>
 #include <stddef.h>

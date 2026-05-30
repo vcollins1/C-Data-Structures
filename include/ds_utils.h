@@ -1,5 +1,5 @@
-#ifndef DS_STATUS_CODE_H
-#define DS_STATUS_CODE_H
+#ifndef CDATASTRUCTURES_DS_STATUS_CODE_H
+#define CDATASTRUCTURES_DS_STATUS_CODE_H
 
 #include <stdbool.h>
 

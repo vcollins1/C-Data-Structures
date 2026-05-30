@@ -1,5 +1,5 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef CDATASTRUCTURES_LIST_H
+#define CDATASTRUCTURES_LIST_H
 
 #include <stddef.h>
 #include <stdbool.h>

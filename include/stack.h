@@ -1,5 +1,5 @@
-#ifndef STACK_H
-#define STACK_H
+#ifndef CDATASTRUCTURES_STACK_H
+#define CDATASTRUCTURES_STACK_H
 
 #include <stdbool.h>
 #include <stddef.h>

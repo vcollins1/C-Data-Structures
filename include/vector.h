@@ -1,5 +1,5 @@
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef CDATASTRUCTURES_VECTOR_H
+#define CDATASTRUCTURES_VECTOR_H
 // Defines API for vector data structure
 #include <stddef.h>
 #include <stdbool.h>
