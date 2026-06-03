@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.21)
 project(CDataStructures LANGUAGES C)
 
-set(CFLAGS -g -Wall -Wextra -Wpedantic -Werror)
+set(CFLAGS -g -Wall -Wextra -Wpedantic -Werror -fPIC)
 set(TEST_TARGETS list_test vector_test stack_test queue_test deque_test)
 
-add_library(data_structures
+add_library(data_structures SHARED
     src/list.c
     src/vector.c
     src/stack.c
     src/queue.c
     src/deque.c
+    src/int_list.c
 )
 target_compile_features(data_structures PRIVATE c_std_17)
 target_compile_options(data_structures PRIVATE ${CFLAGS})
