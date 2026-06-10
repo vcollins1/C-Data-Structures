@@ -17,6 +17,10 @@ int32_t int_list_remove_back(int_list_t *list) {
     return list_remove_back(list, NULL);
 }
 
+int32_t int_list_at(int_list_t *list, size_t index, int32_t output) {
+    return list_at(list, index, &output);
+}
+
 size_t int_list_size(int_list_t *list) {
     return list_size(list);
 }
